@@ -24,16 +24,18 @@
         <p class="slds-align_absolute-center slds-text-heading_large" >Pooja Tewani</p>
         <p class="slds-align_absolute-center">Emp id: 204562</p>
       
+    <template if:true={menuLoaded}>
       <div style="text-align: left; margin-top: 10vh;">
 
+       
          <div class="slds-grid slds-wrap">
              <img class="slds-col slds-size_2-of-12 menuicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/city.png"/>  
             <lightning-combobox
-                class="slds-col slds-size_10-of-12 blackFont bginput"
+                class="slds-col slds-size_10-of-12 blackFont"
                 value={value}
                 placeholder="Select City"
                 options={cityOptions}
-                onchange={handleChange}
+                onchange={handleLocationChange}
                 variant="label-hidden"
              ></lightning-combobox>
         </div>
@@ -45,7 +47,7 @@
                value={value}
                placeholder="Select Building"
                options={buildingOptions}
-               onchange={handleChange}
+               onchange={handleBuildingChange}
                variant="label-hidden"
             ></lightning-combobox>
        </div>
@@ -73,6 +75,7 @@
 
         <lightning-button variant="brand-outline" label="Search" class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
       </div>
+    </template>
     </div>
     <div class="slds-col slds-size_9-of-12 slds-scrollable mainArea">
     <div class="row slds-grid slds-wrap slds-m-top_xx-large" >

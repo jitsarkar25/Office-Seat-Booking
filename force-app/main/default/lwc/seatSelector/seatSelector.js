@@ -1,15 +1,16 @@
 import { LightningElement,track } from 'lwc';
 import fetchConfiguration from '@salesforce/apex/SeatSelectorController.fetchConfiguration';
+import getPreferenceValues from '@salesforce/apex/SeatSelectorController.getPreferenceValues';
 
 export default class SeatSelector extends LightningElement {
 
-    get prefernceOptions () {
+    /*get prefernceOptions () {
         return [{'key':'AC','value':'AC'},
                        {'key':'Meeting Room','value':'Meeting Room'},
                        {'key':'Pantry','value':'Pantry'},
                        {'key':'Door','value':'Door'}];
-    }
-
+    }*/
+    menuLoaded = false;
     floorPlan = {
         block :[
             {   id:1,
@@ -425,15 +426,26 @@ export default class SeatSelector extends LightningElement {
     cityOptions = [];
     buildingList = [];
     floorList = [];
-    
+    prefernceOptions = [];
     error;
     connectedCallback(){
+
+        getPreferenceValues()
+        .then(data => {
+            debugger;
+            this.prefernceOptions = data;
+            this.menuLoaded = true;
+        })
+        .catch(error => {
+            this.displayError(error);
+        });
         
         fetchConfiguration()
             .then(result => {
                 var response = JSON.parse(result);
                 var city = [];
                 var floor = [];
+                var preference = [];
                 for(var index in response.locations){
                     this.locations.push(response.locations[index].location);
                     city.push({
@@ -453,6 +465,14 @@ export default class SeatSelector extends LightningElement {
                       });  
                 }
                 this.floorList = floor;
+                
+                /*for(var index in response.Preferences){
+                    preference.push({
+                        value: response.Preferences[index].preference,
+                        label: response.Preferences[index].preference
+                      });
+                    this.prefernceOptions = preference;
+                }*/
             })
             .catch(error => {
                 this.error = error;
@@ -468,34 +488,33 @@ export default class SeatSelector extends LightningElement {
     }
 
     buildingOptions = [];
-    floorOptions = [];
-    handleChange(event) {
-        this.value = event.detail.value; 
+    handleLocationChange(event) {
+        this.location = event.detail.value; 
         var building = [];   
         for(var key in this.buildingList){
-            if(this.buildingList[key].location.includes(this.value)){
+            if(this.buildingList[key].location.includes(this.location)){
                 building.push({
                     value: this.buildingList[key].building,
                     label: this.buildingList[key].building
                   });
                 this.buildingOptions = building;
             }  
-        }
+        }   
+    }
 
+    floorOptions = [];
+    handleBuildingChange(event) {
+        this.building = event.detail.value;
         var floor = [];   
         for(var key in this.floorList){
-            if(this.floorList[key].label.includes(this.value)){
+            if(this.floorList[key].label.includes(this.building)){
                 floor.push({
                     value: this.floorList[key].value,
                     label: this.floorList[key].value
                   });
-                this.floorOptions = floor;
-            }  
+            }
+            this.floorOptions = floor;  
         }
-        
-        
     }
-
-
 
 }
