@@ -1,0 +1,105 @@
+<template>
+
+<!--head>
+  <title>Pooja</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+</head-->
+
+
+
+
+  <div id="screen2">
+    
+  </div>
+  <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
+  <div id="mainSelection" class="row content text-center slds-grid slds-gutters" >
+    <div class="slds-col slds-size_3-of-12 leftDetails ">
+  
+        <p class="slds-align_absolute-center slds-text-heading_large" >Pooja Tewani</p>
+        <p class="slds-align_absolute-center">Emp id: 204562</p>
+      
+      <div style="text-align: left; margin-top: 10vh;">
+
+         <div class="slds-grid slds-wrap">
+             <img class="slds-col slds-size_2-of-12 menuicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/city.png"/>  
+            <lightning-combobox
+                class="slds-col slds-size_10-of-12 blackFont bginput"
+                value={value}
+                placeholder="Select City"
+                options={cityOptions}
+                onchange={handleChange}
+                variant="label-hidden"
+             ></lightning-combobox>
+        </div>
+        <hr />
+        <div class="slds-grid slds-wrap">
+            <img class="slds-col slds-size_2-of-12 menuicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/home.png"/>  
+           <lightning-combobox
+               class="slds-col slds-size_10-of-12 blackFont"
+               value={value}
+               placeholder="Select Building"
+               options={buildingOptions}
+               onchange={handleChange}
+               variant="label-hidden"
+            ></lightning-combobox>
+       </div>
+       <hr />
+       <div class="slds-grid slds-wrap">
+            <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/link-company-parent.png"/>  
+            <lightning-combobox
+                class="slds-col slds-size_10-of-12 blackFont"
+                value={value}
+                placeholder="Select Floor"
+                options={floorOptions}
+                variant="label-hidden"
+            ></lightning-combobox>
+        </div>
+        <hr />
+        <div class="slds-grid slds-wrap">
+            <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/2012.png"/>  
+            <lightning-input  class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" ></lightning-input>
+        </div>
+        <hr />
+        <div class="slds-grid slds-wrap">
+            <img class="slds-col slds-size_2-of-12 menuicon" src="https://img.icons8.com/material-rounded/24/ffffff/star--v1.png"/>  
+            <c-multi-picklist label="" options={prefernceOptions} class="slds-col slds-size_10-of-12 blackFont " ></c-multi-picklist>
+        </div>
+
+        <lightning-button variant="brand-outline" label="Search" class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
+      </div>
+    </div>
+    <div class="slds-col slds-size_9-of-12 slds-scrollable mainArea">
+    <div class="row slds-grid slds-wrap slds-m-top_xx-large" >
+      <template for:each={floorPlan.block} for:item="aBlock">
+        <div class="slds-col slds-size_1-of-3  slds-grid slds-wrap cubewidth" key={aBlock.id}>
+            <template for:each={aBlock.cubicle} for:item="aCubicle">
+              <div class={aCubicle.class} key={aCubicle.id}>
+                  <div class="slds-grid slds-wrap">
+                    <template for:each={aCubicle.seat} for:item="aSeat">
+                        <div class="slds-col slds-size_1-of-2" key={aSeat.id} title={aSeat.id}>
+                            <div class="circle"></div>
+                        </div>
+                    </template>
+                  </div>
+              </div>
+            </template>
+        </div>
+          
+      </template>
+    </div>
+    
+   
+      <!-- <button type="button" class="btn btn-success">Confirm Seat</button> -->
+    </div>
+  </div>
+
+
+
+
+</template>

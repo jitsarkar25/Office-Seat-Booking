@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>NGP_G_G0_B5_C3_S3</label>
+    <protected>false</protected>
+    <values>
+        <field>Cubicle__c</field>
+        <value xsi:type="xsd:string">NGP_G_G0_B5_C3</value>
+    </values>
+    <values>
+        <field>IsCloseToAC__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Seat_Id__c</field>
+        <value xsi:type="xsd:string">NGP_G_G0_B5_C3_S3</value>
+    </values>
+    <values>
+        <field>isCloseToDoor__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>isCloseToMeetingRoom__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>isCloseToWIndow__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+</CustomMetadata>
