@@ -430,54 +430,19 @@ export default class SeatSelector extends LightningElement {
     error;
     connectedCallback(){
 
-        getPreferenceValues()
-        .then(data => {
-            debugger;
-            this.prefernceOptions = data;
+        const promises = [
+            getPreferenceValues(),
+            fetchConfiguration()
+        ];
+
+        Promise.all(promises)
+        .then(responseArr => {
+            this.prefernceOptions = responseArr[0];
+            this.parseConfigResponse(responseArr[1]);
             this.menuLoaded = true;
-        })
-        .catch(error => {
-            this.displayError(error);
         });
-        
-        fetchConfiguration()
-            .then(result => {
-                var response = JSON.parse(result);
-                var city = [];
-                var floor = [];
-                var preference = [];
-                for(var index in response.locations){
-                    this.locations.push(response.locations[index].location);
-                    city.push({
-                        value: response.locations[index].location,
-                        label: response.locations[index].location
-                      });  
-                }
-                this.cityOptions = city;
-                for(var key in response.buildings){
-                    this.buildingList.push(response.buildings[key]);  
-                }
 
-                for(var index in response.floors){
-                    floor.push({
-                        value: response.floors[index].floorName,
-                        label: response.floors[index].building
-                      });  
-                }
-                this.floorList = floor;
-                
-                /*for(var index in response.Preferences){
-                    preference.push({
-                        value: response.Preferences[index].preference,
-                        label: response.Preferences[index].preference
-                      });
-                    this.prefernceOptions = preference;
-                }*/
-            })
-            .catch(error => {
-                this.error = error;
-            });
-
+    
         
         for(var obj in this.floorPlan.block){
             for(var cube in this.floorPlan.block[obj].cubicle){
@@ -515,6 +480,32 @@ export default class SeatSelector extends LightningElement {
             }
             this.floorOptions = floor;  
         }
+    }
+
+    parseConfigResponse(resp){
+        var response = JSON.parse(resp);
+                var city = [];
+                var floor = [];
+                var preference = [];
+                for(var index in response.locations){
+                    this.locations.push(response.locations[index].location);
+                    city.push({
+                        value: response.locations[index].location,
+                        label: response.locations[index].location
+                      });  
+                }
+                this.cityOptions = city;
+                for(var key in response.buildings){
+                    this.buildingList.push(response.buildings[key]);  
+                }
+
+                for(var index in response.floors){
+                    floor.push({
+                        value: response.floors[index].floorName,
+                        label: response.floors[index].building
+                      });  
+                }
+                this.floorList = floor;
     }
 
 }
