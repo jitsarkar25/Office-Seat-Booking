@@ -11,6 +11,11 @@ public inherited sharing class SeatSelectorController {
         List<Floor__mdt> floors = [select label,Building__r.DeveloperName from Floor__mdt];
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
 
+        List<Block__mdt> blocks = [select label,Block_Id__c,Floor__r.DeveloperName from Block__mdt];
+        List<Cubicle__mdt> cubicles = [select label,Block__r.DeveloperName,Cubicle_Id__c,entry__c from Cubicle__mdt];
+        List<Seat__mdt> seats = [select label,Cubicle__r.DeveloperName,IsCloseToAC__c,isCloseToDoor__c,
+                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seat__mdt];
+
         configWrap.buildings = new List<ConfigWrapper.buildingWrapper>();
         for(Building__mdt building: buildings){
             ConfigWrapper.buildingWrapper buildingData = new ConfigWrapper.buildingWrapper();
@@ -39,6 +44,38 @@ public inherited sharing class SeatSelectorController {
             ConfigWrapper.PreferenceWrapper PreferenceData = new ConfigWrapper.PreferenceWrapper();
             PreferenceData.preference = preference.label;
             configWrap.Preferences.add(PreferenceData);
+        }
+
+        configWrap.blocks = new List<ConfigWrapper.blockWrapper>();
+        for(Block__mdt block: blocks){
+            ConfigWrapper.blockWrapper blockData = new ConfigWrapper.blockWrapper();
+            blockData.blockName = block.label;
+            blockData.blockId = block.Block_Id__c;
+            blockData.floor = block.Floor__r.DeveloperName;
+            configWrap.blocks.add(blockData);
+        }
+
+        configWrap.cubicles = new List<ConfigWrapper.cubicleWrapper>();
+        for(Cubicle__mdt cubicle: cubicles){
+            ConfigWrapper.cubicleWrapper cubicleData = new ConfigWrapper.cubicleWrapper();
+            cubicleData.cubicleId = cubicle.Cubicle_Id__c;
+            cubicleData.cubicleName = cubicle.label;
+            cubicleData.block = cubicle.Block__r.DeveloperName;
+            cubicleData.entry = cubicle.entry__c;
+            configWrap.cubicles.add(cubicleData);
+        }
+
+        configWrap.seats = new List<ConfigWrapper.seatWrapper>();
+        for(Seat__mdt seat: seats){
+            ConfigWrapper.seatWrapper seatData = new ConfigWrapper.seatWrapper();
+            seatData.seatId = seat.Seat_Id__c;
+            seatData.seatName = seat.label;
+            seatData.cubicle = seat.Cubicle__r.DeveloperName;
+            seatData.isCloseToAC = seat.IsCloseToAC__c;
+            seatData.isCloseToDoor = seat.isCloseToDoor__c;
+            seatData.isCloseToMeetingRoom = seat.isCloseToMeetingRoom__c;
+            seatData.isCloseToWindow = seat.isCloseToWIndow__c;
+            configWrap.seats.add(seatData);
         }
 
         return JSON.serialize(configWrap);

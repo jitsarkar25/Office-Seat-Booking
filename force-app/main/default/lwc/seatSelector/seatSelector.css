@@ -26,22 +26,7 @@ body {
     padding-right: 20px;
   }
   
-  .circle {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background-color: #0ae86f;
-    margin-top: 16px;
-  }
-  
-  .cubicle {
-      width: 100px;
-      height: 100px;
-      display: inline-block;
-      margin-top: 11px;
-      margin-right: 12px;
-     
-  }
+
   .active{
     background-color: darkred;
   }
@@ -75,18 +60,169 @@ body {
   }
   @media screen and (max-width: 2000px){
     .cubewidth{
-        width: 33%;
+        width: 27%;
         padding: 53px;
+      }
+      .circle {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background-color: #0ae86f;
+        margin-top: 16px;
+      }
+      
+      .cubicle {
+          width: 100px;
+          height: 100px;
+          display: inline-block;
+          margin-top: 11px;
+          margin-right: 12px;
+         
+      }
+
+      .windowLeft {
+        background: skyblue;
+          padding: 10px;
+          border-radius: 5px;
+              margin-top: 150px;
+          -webkit-transform: rotate(-90deg);
+          -moz-transform: rotate(-90deg);
+          -o-transform: rotate(-90deg);
+          -ms-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+          width: 140px;
+        text-align: center;
+      }
+
+      .windowRight {
+        background: skyblue;
+        padding: 10px;
+        border-radius: 5px;
+        width: 140px;
+        margin-left: -36px;
+        text-align: center;
+        margin-top: 150px;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+    
+      .meetingRoomRight {
+        background: lightcoral;
+          padding: 10px;
+          border-radius: 5px;
+          width: 140px;
+          margin-left: -36px;
+          text-align: center;
+          margin-top: 150px;
+          -webkit-transform: rotate(90deg);
+          -moz-transform: rotate(90deg);
+          -o-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+      }
+
+      .meetingRoomLeft {
+        background: lightcoral;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 150px;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        width: 140px;
+      text-align: center;
       }
   }
  
   @media screen and (max-width: 1500px){
     .cubewidth{
-        width: 33%;
+        width: 25%;
         padding: 30px;
       }
       hr{
         margin:10px !important;
+    }
+
+    .circle {
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      background-color: #0ae86f;
+      margin-top: 14px;
+      position:relative;
+      right:2px;
+    }
+    
+    .cubicle {
+        width: 80px;
+        height: 80px;
+        display: inline-block;
+        margin-top: 11px;
+        margin-right: 12px;
+       
+    }
+
+    .windowLeft {
+      background: skyblue;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 110px;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        width: 140px;
+      text-align: center;
+    }
+
+    .windowRight {
+      background: skyblue;
+      padding: 10px;
+      border-radius: 5px;
+      width: 140px;
+      margin-left: -36px;
+      text-align: center;
+      margin-top: 110px;
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      transform: rotate(90deg);
+    }
+  
+    .meetingRoomRight {
+        background: lightcoral;
+        padding: 10px;
+        border-radius: 5px;
+        width: 140px;
+        margin-left: -36px;
+        text-align: center;
+        margin-top: 110px;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    .meetingRoomLeft {
+        background: lightcoral;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 110px;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        width: 140px;
+        text-align: center;
     }
   }
   
@@ -105,3 +241,44 @@ body {
   .mainArea{
       height: 100vh;
   }
+
+  .leftAC{
+    position: relative;
+    left:25px;
+  }
+
+  .rightAC{
+    position: relative;
+    right:30px;
+  }
+
+  .ac{
+      background: lightgray;
+      padding: 10px;
+      border-radius: 5px;
+      width: 50px;
+      margin: 0px 119px;
+      display: inline-block;
+      text-align: center;
+  }
+  .acRow{
+    width:100%;
+  }
+
+  .meetingRoomHori{
+    background: lightcoral;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    display: inline-block;
+    text-align:center;
+}
+
+.meetingHori{
+  background: skyblue;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  display: inline-block;
+  text-align:center;
+}

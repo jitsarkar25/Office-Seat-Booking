@@ -79,22 +79,74 @@
     </div>
     <div class="slds-col slds-size_9-of-12 slds-scrollable mainArea">
     <div class="row slds-grid slds-wrap slds-m-top_xx-large" >
-      <template for:each={floorPlan.block} for:item="aBlock">
-        <div class="slds-col slds-size_1-of-3  slds-grid slds-wrap cubewidth" key={aBlock.id}>
-            <template for:each={aBlock.cubicle} for:item="aCubicle">
-              <div class={aCubicle.class} key={aCubicle.id}>
-                  <div class="slds-grid slds-wrap">
-                    <template for:each={aCubicle.seat} for:item="aSeat">
-                        <div class="slds-col slds-size_1-of-2" key={aSeat.id} title={aSeat.id}>
-                            <div class="circle"></div>
-                        </div>
-                    </template>
-                  </div>
-              </div>
-            </template>
-        </div>
-          
+      <template for:each={floorPlan.row} for:item="aRow">
+        <template for:each={aRow} for:item="aBlock">
+          <template if:true={aBlock.isLeftWindow}>
+            <div class="slds-col slds-size_1-of-12"  key={aBlock.id}>
+              <div class="windowLeft" >Window</div>
+            </div>
+          </template>
+          <template if:true={aBlock.isLeftMeeting}>
+            <div class="slds-col slds-size_1-of-12"  key={aBlock.id}>
+              <div class="meetingRoomLeft" >Meeting Room</div>
+            </div>
+          </template>
+          <div class="slds-col slds-size_3-of-12  slds-grid slds-wrap cubewidth slds-align_absolute-center" key={aBlock.id}>
+              <template for:each={aBlock.cubicle} for:item="aCubicle">
+                <div class={aCubicle.class} key={aCubicle.id}>
+                    <div class="slds-grid slds-wrap">
+                      <template for:each={aCubicle.seat} for:item="aSeat">
+                          <div class="slds-col slds-size_1-of-2" key={aSeat.id} title={aSeat.id}>
+                              <div class="circle"></div>
+                          </div>
+                      </template>
+                    </div>
+                </div>
+              </template>
+          </div>
+          <template if:true={aBlock.isRightMeeting}>
+            <div class="slds-col slds-size_1-of-12"  key={aBlock.id}>
+              <div class="meetingRoomRight" >Meeting Room</div>
+            </div>
+          </template>
+          <template if:true={aBlock.isRightWindow}>
+            <div class="slds-col slds-size_1-of-12"  key={aBlock.id}>
+              <div class="windowRight" >Window</div>
+            </div>
+          </template>
+        </template>
+        <template if:true={aRow.isAC}>
+          <div class="acRow slds-grid slds-wrap" key={aRow.id}>
+            <div class="slds-col slds-size_2-of-12">a</div>
+            <div class="slds-col slds-size_4-of-12 slds-align_absolute-center leftAC">
+              <div class="ac">AC</div>
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-align_absolute-center rightAC">
+              <div class="ac">AC</div>
+            </div>
+            <div class="slds-col slds-size_2-of-12">a</div>
+          </div>
+        </template>
       </template>
+      <div class="acRow slds-grid slds-wrap">\
+        <div class="slds-col ">a</div>
+      <template for:each={lastRow} for:item="aRoom">
+        
+         <template if:true={aRoom.isBottomMeeting}>
+          <div class="slds-col  slds-align_absolute-center" key={aRoom.id}>
+            <div class="meetingRoomHori">Meeting Room</div>
+          </div>
+         </template>
+         <template if:true={aRoom.isBottomWindow}>
+          <div class="slds-col  slds-align_absolute-center" key={aRoom.id}>
+            <div class="meetingHori">Window</div>
+          </div>
+         </template>
+          
+        
+      </template>
+      <div class="slds-col">a</div>
+      </div>
     </div>
     
    

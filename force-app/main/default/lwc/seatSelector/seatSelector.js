@@ -11,9 +11,16 @@ export default class SeatSelector extends LightningElement {
                        {'key':'Door','value':'Door'}];
     }*/
     menuLoaded = false;
+    lastRow = [];
     floorPlan = {
+        columns:3,
         block :[
-            {   id:1,
+            {
+                id:1,
+                window: ['left'],
+                meetingRoom: [],
+                isWindow: true,
+                isMeetingRoom: false,
                 cubicle : [
                     {
                     id:1,
@@ -60,6 +67,10 @@ export default class SeatSelector extends LightningElement {
             },
             {
                 id:2,
+                window: [],
+                meetingRoom: [],
+                isWindow: false,
+                isMeetingRoom: false,
                 cubicle : [
                     {
                     id:5,
@@ -106,6 +117,10 @@ export default class SeatSelector extends LightningElement {
             },
             {
                 id:3,
+                window: [],
+                meetingRoom: ['right'],
+                isWindow: false,
+                isMeetingRoom: true,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -151,6 +166,10 @@ export default class SeatSelector extends LightningElement {
             },
             {
                 id:4,
+                window: ['left'],
+                meetingRoom: [],
+                isWindow: true,
+                isMeetingRoom: false,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -196,6 +215,10 @@ export default class SeatSelector extends LightningElement {
             },
             {
                 id:5,
+                window: [],
+                meetingRoom: [],
+                isWindow: false,
+                isMeetingRoom: false,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -241,6 +264,10 @@ export default class SeatSelector extends LightningElement {
             },
             {
                 id:6,
+                window: [],
+                meetingRoom: ['right'],
+                isWindow: false,
+                isMeetingRoom: true,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -285,7 +312,11 @@ export default class SeatSelector extends LightningElement {
             ]
             },
             {
-                id:6,
+                id:7,
+                window: [],
+                meetingRoom: ['left','bottom'],
+                isWindow: true,
+                isMeetingRoom: false,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -328,8 +359,13 @@ export default class SeatSelector extends LightningElement {
                 },
 
             ]
-            },{
-                id:6,
+            },
+            {
+                id:8,
+                window: [],
+                meetingRoom: ['bottom'],
+                isWindow: false,
+                isMeetingRoom: false,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -372,8 +408,13 @@ export default class SeatSelector extends LightningElement {
                 },
 
             ]
-            },{
-                id:6,
+            },
+            {
+                id:9,
+                window: ['right','bottom'],
+                meetingRoom: [],
+                isWindow: false,
+                isMeetingRoom: true,
                 cubicle : [{
                     id:9,
                     entry: "leftentry",
@@ -443,14 +484,78 @@ export default class SeatSelector extends LightningElement {
         });
 
     
-        
-        for(var obj in this.floorPlan.block){
+        var columns = this.floorPlan.columns;
+        var rows = this.floorPlan.block.length / columns;    
+        /*for(var obj in this.floorPlan.block){
             for(var cube in this.floorPlan.block[obj].cubicle){
                 this.floorPlan.block[obj].cubicle[cube].class = this.floorPlan.block[obj].cubicle[cube].entry + ' cubicle';
             }
+        }*/
+        var blocks =[];
+        var bottomRow =[];
+        this.floorPlan.row=[];
+
+        this.floorPlan.block.forEach((item,index) =>{
+            blocks.push(item);
+           
+            if((index+1) % columns == 0 ){
+                rows--;
+                blocks.id = index;
+                if(rows == 0){
+                    blocks.isAC = false;
+                }
+                else{
+                    blocks.isAC = true;
+                }
+                this.floorPlan.row.push(blocks);
+                blocks = [];
+            }
+
+           
+
+            if(item.window.length > 0){
+                if(item.window.includes('left')){
+                    item.isLeftWindow = true;
+                }
+                if(item.window.includes('right')){
+                    item.isRightWindow = true;
+                }
+                if(item.window.includes('top')){
+                    item.isTopWindow = true;
+                }
+                if(item.window.includes('bottom')){
+                    this.lastRow.push({id: 1,isBottomWindow:true});
+                }
+            }
+
+            if(item.meetingRoom.length > 0){
+                if(item.meetingRoom.includes('left')){
+                    item.isLeftMeeting= true;
+                }
+                if(item.meetingRoom.includes('right')){
+                    item.isRightMeeting = true;
+                }
+                if(item.meetingRoom.includes('top')){
+                    item.isTopMeeting = true;
+                }
+                if(item.meetingRoom.includes('bottom')){
+                    this.lastRow.push({id: 2,isBottomMeeting:true});
+                }
+            }
+
+            
+            item.cubicle.forEach((cube) =>{
+                cube.class = cube.entry + ' cubicle';
+            });
+        });
+
+        if(bottomRow.length > 0){
+            this.floorPlan.row.push(bottomRow);
         }
+
         debugger;
     }
+
 
     buildingOptions = [];
     handleLocationChange(event) {
