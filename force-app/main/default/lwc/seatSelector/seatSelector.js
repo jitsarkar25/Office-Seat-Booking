@@ -11,6 +11,7 @@ export default class SeatSelector extends LightningElement {
                        {'key':'Door','value':'Door'}];
     }*/
     menuLoaded = false;
+    bookBtnDisabled=true;
     lastRow = [];
     floorPlan = {
         columns:3,
@@ -26,9 +27,9 @@ export default class SeatSelector extends LightningElement {
                     id:1,
                     entry: "topentry",
                     seat : [
-                        {id : 123},
+                        {id : 123,isBooked:true},
                         {id : 345},
-                        {id : 678},
+                        {id : 678,isBooked:true},
                         {id : 890},
                     ]
                 },
@@ -351,10 +352,10 @@ export default class SeatSelector extends LightningElement {
                     id:11,
                     entry: "rightentry",
                     seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
+                        {id : 123,isBooked:true},
+                        {id : 345,isBooked:true},
+                        {id : 678,isBooked:true},
+                        {id : 890,isBooked:true},
                     ]
                 },
 
@@ -419,7 +420,7 @@ export default class SeatSelector extends LightningElement {
                     id:9,
                     entry: "leftentry",
                     seat : [
-                        {id : 123},
+                        {id : 123,isBooked:true},
                         {id : 345},
                         {id : 678},
                         {id : 890},
@@ -430,8 +431,8 @@ export default class SeatSelector extends LightningElement {
                     entry: "rightentry",
                     seat : [
                         {id : 123},
-                        {id : 345},
-                        {id : 678},
+                        {id : 345,isBooked:true},
+                        {id : 678,isBooked:true},
                         {id : 890},
                     ]
                 },
@@ -613,4 +614,22 @@ export default class SeatSelector extends LightningElement {
                 this.floorList = floor;
     }
 
+    seatclick(evt){
+        debugger;
+        if(!evt.target.classList.contains('bookedSeat')){
+           
+
+            this.template.querySelectorAll('.circle').forEach((cir)=>{
+                if(cir.classList.contains('selectedSeat')){
+                    cir.classList.remove('selectedSeat');
+                    cir.classList.add('availableSeat');
+                }
+            });
+            evt.target.classList.remove('availableSeat');
+            evt.target.classList.add('selectedSeat');
+            this.bookBtnDisabled=false;
+        }
+        
+    }
 }
+

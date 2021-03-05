@@ -14,8 +14,8 @@
 
 
 
-  <div id="screen2">
-    
+  <div class="topbar">
+    <lightning-button variant="brand" label="Book Seat"  disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
   </div>
   <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
   <div id="mainSelection" class="row content text-center slds-grid slds-gutters" >
@@ -74,6 +74,8 @@
         </div>
 
         <lightning-button variant="brand-outline" label="Search" class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
+
+      
       </div>
     </template>
     </div>
@@ -98,7 +100,13 @@
                     <div class="slds-grid slds-wrap">
                       <template for:each={aCubicle.seat} for:item="aSeat">
                           <div class="slds-col slds-size_1-of-2" key={aSeat.id} title={aSeat.id}>
-                              <div class="circle"></div>
+                            <template if:true={aSeat.isBooked}>
+                              <div class="circle bookedSeat" onclick={seatclick}></div>
+                            </template>  
+                            <template if:false={aSeat.isBooked}>
+                              <div class="circle availableSeat" onclick={seatclick}></div>
+                            </template>
+                            
                           </div>
                       </template>
                     </div>
@@ -129,8 +137,8 @@
           </div>
         </template>
       </template>
-      <div class="acRow slds-grid slds-wrap">\
-        <div class="slds-col ">a</div>
+      <div class="acRow slds-grid slds-wrap">
+        <div class="slds-col ">.</div>
       <template for:each={lastRow} for:item="aRoom">
         
          <template if:true={aRoom.isBottomMeeting}>
@@ -146,7 +154,7 @@
           
         
       </template>
-      <div class="slds-col">a</div>
+      <div class="slds-col">.</div>
       </div>
     </div>
     
@@ -154,7 +162,7 @@
       <!-- <button type="button" class="btn btn-success">Confirm Seat</button> -->
     </div>
   </div>
-
+  
 
 
 
