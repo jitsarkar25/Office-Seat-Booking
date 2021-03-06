@@ -11,8 +11,9 @@ public inherited sharing class SeatSelectorController {
         List<Floor__mdt> floors = [select label,Building__r.DeveloperName from Floor__mdt];
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
 
-        List<Block__mdt> blocks = [select label,Block_Id__c,Floor__r.DeveloperName from Block__mdt];
-        List<Cubicle__mdt> cubicles = [select label,Block__r.DeveloperName,Cubicle_Id__c,entry__c from Cubicle__mdt];
+        List<Block__mdt> blocks = [select label,Block_Id__c,Floor__r.DeveloperName,isMeetingRoom__c,IsWindow__c,
+                                    Meeting_Room__c,Window__c from Block__mdt order by Block_Id__c];
+        List<Cubicle__mdt> cubicles = [select label,Block__r.DeveloperName,Cubicle_Id__c,entry__c from Cubicle__mdt order by Cubicle_Id__c];
         List<Seat__mdt> seats = [select label,Cubicle__r.DeveloperName,IsCloseToAC__c,isCloseToDoor__c,
                                 isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seat__mdt];
 
@@ -52,6 +53,10 @@ public inherited sharing class SeatSelectorController {
             blockData.blockName = block.label;
             blockData.blockId = block.Block_Id__c;
             blockData.floor = block.Floor__r.DeveloperName;
+            blockData.isMeetingRoom = block.isMeetingRoom__c;
+            blockData.isWindow = block.IsWindow__c;
+            blockData.meetingRoom = block.Meeting_Room__c;
+            blockData.window = block.Window__c;
             configWrap.blocks.add(blockData);
         }
 

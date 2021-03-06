@@ -1,0 +1,20 @@
+<template>
+    <lightning-record-view-form>
+    <lightning-card title="Feedback Form" icon-name="standard:record">
+        <div class="slds-box slds-theme_default">
+            <label>
+            <lightning-input label="Seat No." class="slds-m-bottom_large"></lightning-input>
+            </label>
+
+            <label>
+            <lightning-input label="Employee No." class="slds-m-bottom_large"></lightning-input>
+            </label>
+
+            <label>
+           <lightning-input label="Comments" onchange={handleNameChange} class="slds-m-bottom_large"></lightning-input>
+           </label>
+
+       </div>
+    </lightning-card>
+    </lightning-record-view-form>
+</template>

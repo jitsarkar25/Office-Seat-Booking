@@ -1,0 +1,42 @@
+th{
+    background: #2C3134 !important;
+    color: white !important
+
+}
+
+tr:nth-child(even) {background-color: #efeeee;}
+
+table{
+    width: 80%;
+    margin: 70px auto;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.slds-button{
+    width:100px !important;
+}
+
+td{
+    height:50px;
+}
+.topbar{
+    width:100%;
+    height:50px;
+    position:absolute;
+    top:0px;
+    background:#1C2A31;
+    z-index: 10;
+}
+
+.loggedInUser
+{    margin: 15px;
+    text-align: right;
+    color: white;
+    font-size: 15px;
+}
+
+.slds-modal__header{
+    background: #2C3134 !important;
+    color: white !important
+}
