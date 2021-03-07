@@ -6,37 +6,38 @@ public inherited sharing class SeatSelectorController {
     @AuraEnabled(cacheable=true)
     public static String fetchConfiguration() {
         ConfigWrapper configWrap = new ConfigWrapper();
-        List<Locations__mdt> locations = [select label from Locations__mdt];
-        List<Building__mdt> buildings = [select label,Location__r.DeveloperName from Building__mdt];
-        List<Floor__mdt> floors = [select label,Building__r.DeveloperName from Floor__mdt];
+        List<Location__c> locations = [select Name__c from Location__c];
+        List<Buildings__c> buildings = [select Name__c,Location__r.Name__c from Buildings__c];
+        List<Floors__c> floors = [select Name__c,Building__r.Name__c,Columns__c from Floors__c];
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
 
-        List<Block__mdt> blocks = [select label,Block_Id__c,Floor__r.DeveloperName,isMeetingRoom__c,IsWindow__c,
-                                    Meeting_Room__c,Window__c from Block__mdt order by Block_Id__c];
-        List<Cubicle__mdt> cubicles = [select label,Block__r.DeveloperName,Cubicle_Id__c,entry__c from Cubicle__mdt order by Cubicle_Id__c];
-        List<Seat__mdt> seats = [select label,Cubicle__r.DeveloperName,IsCloseToAC__c,isCloseToDoor__c,
-                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seat__mdt];
+        List<Blocks__c> blocks = [select Block_Id__c,Floor__r.Name__c,isMeetingRoom__c,IsWindow__c,
+                                    Meeting_Room__c,Window__c from Blocks__c order by Block_Id__c];
+        List<Cubicles__c> cubicles = [select Block__r.Block_Id__c,Cubicle_Id__c,entry__c from Cubicles__c order by Cubicle_Id__c];
+        List<Seats__c> seats = [select Cubicle__r.Cubicle_Id__c,IsCloseToAC__c,isCloseToDoor__c,
+                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seats__c];
 
         configWrap.buildings = new List<ConfigWrapper.buildingWrapper>();
-        for(Building__mdt building: buildings){
+        for(Buildings__c building: buildings){
             ConfigWrapper.buildingWrapper buildingData = new ConfigWrapper.buildingWrapper();
-            buildingData.building = building.label;
-            buildingData.location = building.Location__r.DeveloperName;
+            buildingData.building = building.Name__c;
+            buildingData.location = building.Location__r.Name__c;
             configWrap.buildings.add(buildingData);
         }
 
         configWrap.locations = new List<ConfigWrapper.locationWrapper>();
-        for(Locations__mdt location: locations){
+        for(Location__c location: locations){
             ConfigWrapper.locationWrapper locationData = new ConfigWrapper.locationWrapper();
-            locationData.location = location.label;
+            locationData.location = location.Name__c;
             configWrap.locations.add(locationData);
         }
 
         configWrap.floors = new List<ConfigWrapper.floorWrapper>();
-        for(Floor__mdt floor: floors){
+        for(Floors__c floor: floors){
             ConfigWrapper.floorWrapper floorData = new ConfigWrapper.floorWrapper();
-            floorData.floorName = floor.label;
-            floorData.building = floor.Building__r.DeveloperName;
+            floorData.floorName = floor.Name__c;
+            floorData.building = floor.Building__r.Name__c;
+            floorData.columns = floor.Columns__c;
             configWrap.floors.add(floorData);
         }
 
@@ -48,11 +49,11 @@ public inherited sharing class SeatSelectorController {
         }
 
         configWrap.blocks = new List<ConfigWrapper.blockWrapper>();
-        for(Block__mdt block: blocks){
+        for(Blocks__c block: blocks){
             ConfigWrapper.blockWrapper blockData = new ConfigWrapper.blockWrapper();
-            blockData.blockName = block.label;
+            blockData.blockName = block.Block_Id__c;
             blockData.blockId = block.Block_Id__c;
-            blockData.floor = block.Floor__r.DeveloperName;
+            blockData.floor = block.Floor__r.Name__c;
             blockData.isMeetingRoom = block.isMeetingRoom__c;
             blockData.isWindow = block.IsWindow__c;
             blockData.meetingRoom = block.Meeting_Room__c;
@@ -61,21 +62,21 @@ public inherited sharing class SeatSelectorController {
         }
 
         configWrap.cubicles = new List<ConfigWrapper.cubicleWrapper>();
-        for(Cubicle__mdt cubicle: cubicles){
+        for(Cubicles__c cubicle: cubicles){
             ConfigWrapper.cubicleWrapper cubicleData = new ConfigWrapper.cubicleWrapper();
             cubicleData.cubicleId = cubicle.Cubicle_Id__c;
-            cubicleData.cubicleName = cubicle.label;
-            cubicleData.block = cubicle.Block__r.DeveloperName;
+            cubicleData.cubicleName = cubicle.Cubicle_Id__c;
+            cubicleData.block = cubicle.Block__r.Block_Id__c;
             cubicleData.entry = cubicle.entry__c;
             configWrap.cubicles.add(cubicleData);
         }
 
         configWrap.seats = new List<ConfigWrapper.seatWrapper>();
-        for(Seat__mdt seat: seats){
+        for(Seats__c seat: seats){
             ConfigWrapper.seatWrapper seatData = new ConfigWrapper.seatWrapper();
             seatData.seatId = seat.Seat_Id__c;
-            seatData.seatName = seat.label;
-            seatData.cubicle = seat.Cubicle__r.DeveloperName;
+            seatData.seatName = seat.Seat_Id__c;
+            seatData.cubicle = seat.Cubicle__r.Cubicle_Id__c;
             seatData.isCloseToAC = seat.IsCloseToAC__c;
             seatData.isCloseToDoor = seat.isCloseToDoor__c;
             seatData.isCloseToMeetingRoom = seat.isCloseToMeetingRoom__c;

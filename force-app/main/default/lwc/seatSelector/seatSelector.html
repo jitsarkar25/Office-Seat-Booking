@@ -126,14 +126,13 @@
         </template>
         <template if:true={aRow.isAC}>
           <div class="acRow slds-grid slds-wrap" key={aRow.id}>
-            <div class="slds-col slds-size_2-of-12">a</div>
-            <div class="slds-col slds-size_4-of-12 slds-align_absolute-center leftAC">
-              <div class="ac">AC</div>
-            </div>
-            <div class="slds-col slds-size_4-of-12 slds-align_absolute-center rightAC">
-              <div class="ac">AC</div>
-            </div>
-            <div class="slds-col slds-size_2-of-12">a</div>
+            <div class="slds-col slds-size_2-of-12">.</div>
+            <template for:each={acRow} for:item="aAc">
+              <div class={aAc.class} key={aAc.id}>
+                <div class="ac">AC</div>
+              </div>
+            </template>
+            <div class="slds-col slds-size_2-of-12">.</div>
           </div>
         </template>
       </template>
