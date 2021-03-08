@@ -15,7 +15,7 @@
   
   
     <div class="topbar">
-      <lightning-button variant="brand" label="Book Seat"  disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
+      <lightning-button variant="brand" label="Book Seat"  onclick ={bookSeat} disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
     </div>
     <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div id="mainSelection" class="row content text-center slds-grid slds-gutters" >
@@ -66,12 +66,12 @@
           <hr />
           <div class="slds-grid slds-wrap">
               <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/2012.png"/>  
-              <lightning-input  class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" ></lightning-input>
+              <lightning-input  class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={startTimeChange} ></lightning-input>
           </div>
           <hr />
           <div class="slds-grid slds-wrap">
             <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/2012.png"/>  
-            <lightning-input label="Start Time" class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" ></lightning-input>
+            <lightning-input label="Start Time" class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={endTimeChange}></lightning-input>
        </div>
   
           <lightning-button variant="brand-outline" label="Search" onclick={handleSearch} class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
@@ -100,12 +100,12 @@
                   <div class={aCubicle.class} key={aCubicle.id}>
                       <div class="slds-grid slds-wrap">
                         <template for:each={aCubicle.seat} for:item="aSeat">
-                            <div class="slds-col slds-size_1-of-2" key={aSeat.id} title={aSeat.id}>
+                            <div class="slds-col slds-size_1-of-2" key={aSeat.Id} title={aSeat.Id}>
                               <template if:true={aSeat.isBooked}>
-                                <div class="circle bookedSeat" onclick={seatclick}></div>
+                                <div class="circle bookedSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick}></div>
                               </template>  
                               <template if:false={aSeat.isBooked}>
-                                <div class="circle availableSeat" onclick={seatclick}></div>
+                                <div class="circle availableSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick}></div>
                               </template>
                               
                             </div>
@@ -163,6 +163,28 @@
       </div>
     </div>
     
+    <template if:true={showConfirmationModal}>
+      <section role="dialog" tabindex="-1" aria-label="Meaningful description of the modal content" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <header class="slds-modal__header slds-modal__header_empty">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeConfirmation}>
+              <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+              </svg>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+          </header>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <p> Are you sure you want to book Seat No : <span class="slds-text-title_bold">{selectedSeatId}</span> from <span class="slds-text-title_bold">{startDate}</span> to  <span class="slds-text-title_bold">{endDate}</span> ?</p>
+           </div>
+          <footer class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" onclick={closeConfirmation}>Cancel</button>
+            <button class="slds-button slds-button_brand">Book</button>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
   
   
   

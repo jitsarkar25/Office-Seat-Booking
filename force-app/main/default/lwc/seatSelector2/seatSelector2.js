@@ -15,6 +15,10 @@ export default class SeatSelector extends LightningElement {
     floorPlan = {};
     columns='';
     acRow=[];
+    showConfirmationModal = false;
+    bookBtnDisabled=true;
+    startDate='';
+    endDate='';
   
     locations = [];
     cityOptions = [];
@@ -30,6 +34,7 @@ export default class SeatSelector extends LightningElement {
     cubicleListForFloorPlan = [];
     seatListForFloorPlan = [];
     floor;
+    selectedSeatId='';
 
     connectedCallback(){
 
@@ -231,6 +236,7 @@ export default class SeatSelector extends LightningElement {
                         isCloseToDoor: this.seatList[key].isCloseToDoor,
                         isCloseToMeetingRoom: this.seatList[key].isCloseToMeetingRoom,
                         isCloseToWindow: this.seatList[key].isCloseToWindow,
+                        title:"Close To Window " + this.seatList[key].isCloseToWindow
                     });
                 }
                 this.seatListForFloorPlan = seat;
@@ -403,8 +409,41 @@ seatclick(evt){
         });
         evt.target.classList.remove('availableSeat');
         evt.target.classList.add('selectedSeat');
+        this.selectedSeatId = evt.target.dataset.seatid;
         this.bookBtnDisabled=false;
     }
     
 }
+
+bookSeat(evt){
+    this.showConfirmationModal = true;
+}
+
+closeConfirmation(){
+    this.showConfirmationModal = false;
+}
+
+startTimeChange(evt){
+    debugger;
+    var startTime = evt.target.value;
+    var d = new Date(startTime);
+    var minutes = d.getMinutes() == 0 ? '00' : d.getMinutes();
+    var hour = d.getHours() == 0 ? '12' : d.getHours() > 12 ? d.getHours() - 12 : d.getHours();
+    var ampm = d.getHours() >= 12 ? 'PM' : 'AM';
+    var month = d.getMonth()+1;
+    this.startDate = hour +':'+minutes+' '+ampm+' '+d.getDate()+'/'+month+'/'+d.getFullYear();
+}
+
+endTimeChange(evt){
+    debugger;
+    var endTime = evt.target.value;
+    var d = new Date(endTime);
+    var minutes = d.getMinutes() == 0 ? '00' : d.getMinutes();
+    var hour = d.getHours() == 0 ? '12' : d.getHours() > 12 ? d.getHours() - 12 : d.getHours();
+    var ampm = d.getHours() >= 12 ? 'PM' : 'AM';
+    var month = d.getMonth()+1;
+    this.endDate = hour +':'+minutes+' '+ampm+' '+d.getDate()+'/'+month+'/'+d.getFullYear();
+}
+
+
 }
