@@ -14,418 +14,8 @@ export default class SeatSelector extends LightningElement {
     lastRow = []; //rasika
     floorPlan = {};
     columns='';
-    //floorPlan = this.generateFloorPlan() ;
-    /*floorPlan = {
-        block :[
-            {   id:1,
-                cubicle : [
-                    {
-                    id:1,
-                    entry: "topentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:2,
-                    entry: "topentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:3,
-                    entry: "bottomentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:4,
-                    entry: "bottomentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:2,
-                cubicle : [
-                    {
-                    id:5,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:6,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:7,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:8,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:3,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:4,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:5,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:6,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },
-            {
-                id:6,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },{
-                id:6,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            },{
-                id:6,
-                cubicle : [{
-                    id:9,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:9,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:10,
-                    entry: "leftentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-                {
-                    id:11,
-                    entry: "rightentry",
-                    seat : [
-                        {id : 123},
-                        {id : 345},
-                        {id : 678},
-                        {id : 890},
-                    ]
-                },
-
-            ]
-            }
-            
-        ]
-
-    };*/
-
+    acRow=[];
+  
     locations = [];
     cityOptions = [];
     buildingList = [];
@@ -656,9 +246,22 @@ export default class SeatSelector extends LightningElement {
 
         var columns = this.floorPlan.columns;
         var rows = this.floorPlan.block.length / columns;    
+        
         var blocks =[];
         var bottomRow =[];
         this.floorPlan.row=[];
+        this.lastRow=[];
+        this.acRow=[];
+
+        if(columns == 3)
+        {
+            this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center leftAC"});
+            this.acRow.push({id: 2,class: "slds-col slds-size_4-of-12 slds-align_absolute-center rightAC"});
+        }
+        else if(columns == 2 ){
+            this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center"});
+        }
+        
 
         this.floorPlan.block.forEach((item,index) =>{
             blocks.push(item);
@@ -785,5 +388,23 @@ export default class SeatSelector extends LightningElement {
                 }
                 this.seatList = seat;
 
+}
+
+seatclick(evt){
+    debugger;
+    if(!evt.target.classList.contains('bookedSeat')){
+       
+
+        this.template.querySelectorAll('.circle').forEach((cir)=>{
+            if(cir.classList.contains('selectedSeat')){
+                cir.classList.remove('selectedSeat');
+                cir.classList.add('availableSeat');
+            }
+        });
+        evt.target.classList.remove('availableSeat');
+        evt.target.classList.add('selectedSeat');
+        this.bookBtnDisabled=false;
+    }
+    
 }
 }

@@ -10,4 +10,8 @@
         <field>Cubicle_Id__c</field>
         <value xsi:type="xsd:string">NGP_G_G0_B5_C1</value>
     </values>
+    <values>
+        <field>entry__c</field>
+        <value xsi:type="xsd:string">leftentry</value>
+    </values>
 </CustomMetadata>

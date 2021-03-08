@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>NGP-G-G0-B7</label>
+    <label>NGP_G_G0_B7</label>
     <protected>false</protected>
     <values>
         <field>Block_Id__c</field>
-        <value xsi:type="xsd:string">NGP-G-G0-B7</value>
+        <value xsi:type="xsd:string">NGP_G_G0_B7</value>
     </values>
     <values>
         <field>Floor__c</field>
         <value xsi:type="xsd:string">G0</value>
+    </values>
+    <values>
+        <field>IsWindow__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Meeting_Room__c</field>
+        <value xsi:type="xsd:string">left,bottom</value>
+    </values>
+    <values>
+        <field>Window__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>isMeetingRoom__c</field>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
 </CustomMetadata>
