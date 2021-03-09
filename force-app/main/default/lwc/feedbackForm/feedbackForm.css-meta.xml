@@ -7,5 +7,11 @@
         <target>lightningCommunity__Default</target>
         <target>lightning__HomePage</target>
         <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__HomePage,lightning__RecordPage">
+            <property name="seatNumber" type="String" label="Seat No."/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

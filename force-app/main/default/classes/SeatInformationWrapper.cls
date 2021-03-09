@@ -57,6 +57,16 @@ public class SeatInformationWrapper {
                 }
             }
         }
+        public Seat_Information__c getObject(){
+        Seat_Information__c seatInfo = new Seat_Information__c();
+        seatInfo.Name= this.seatId;
+        seatInfo.Total_Times_Booked__c =this.totalTimesBooked;
+        seatInfo.Total_Times_Occupied__c =this.totalTimesOccupied;
+        //seatInfo.Last_Booked_Date__c =this.lastBookedDate 
+        seatInfo.Seat_Speciality__c = this.speciality;
+        //this.averageRating
+        return seatInfo;
+        }
     }
     
     

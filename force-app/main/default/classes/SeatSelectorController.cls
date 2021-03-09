@@ -1,4 +1,4 @@
-public inherited sharing class SeatSelectorController {
+public without sharing class SeatSelectorController {
     public SeatSelectorController() {
 
     }

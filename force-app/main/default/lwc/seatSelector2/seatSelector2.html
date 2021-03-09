@@ -11,7 +11,22 @@
     <script src="js/main.js"></script>
   </head-->
   
-  
+    <template if:true={showToastBar}>
+      <div class="slds-notify_container">
+          <div class={outerClass} role="status">
+            <span class="slds-assistive-text">{type}</span>
+            <span class={innerClass} title={message}>
+                <lightning-icon icon-name={getIconName} alternative-text="icon" variant="inverse" size="small"></lightning-icon>
+            </span>
+            <div class="slds-notify__content">
+                <h2 class="slds-text-heading_small">{message}</h2>
+            </div>
+            <div class="slds-notify__close">
+                <lightning-button-icon icon-name="utility:close" size="small" variant="border-filled" class="slds-button slds-button_icon slds-button_icon-inverse" alternative-text="next" onclick={closeModel} ></lightning-button-icon>
+            </div>
+          </div>
+        </div>
+    </template>
   
   
     <div class="topbar">
@@ -66,13 +81,19 @@
           <hr />
           <div class="slds-grid slds-wrap">
               <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/2012.png"/>  
-              <lightning-input  class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={startTimeChange} ></lightning-input>
-          </div>
+              <p class="field-title">From Time</p>
+              <div class="style1">
+                <lightning-input  class="slds-col slds-size_12-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={startTimeChange} ></lightning-input>
+              </div>
+            </div>
           <hr />
           <div class="slds-grid slds-wrap">
             <img class="slds-col slds-size_2-of-12 menuicon " src="https://img.icons8.com/ios-glyphs/30/ffffff/2012.png"/>  
-            <lightning-input label="Start Time" class="slds-col slds-size_10-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={endTimeChange}></lightning-input>
-       </div>
+            <p class="field-title">To Time</p>
+            <div class="style1">
+              <lightning-input label="Start Time" class="slds-col slds-size_12-of-12 blackFont slds-m-top_medium" type="datetime" name="input1" variant="label-hidden" onchange={endTimeChange}></lightning-input>
+            </div>
+          </div>
   
           <lightning-button variant="brand-outline" label="Search" onclick={handleSearch} class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
   
@@ -102,10 +123,18 @@
                         <template for:each={aCubicle.seat} for:item="aSeat">
                             <div class="slds-col slds-size_1-of-2" key={aSeat.Id} title={aSeat.Id}>
                               <template if:true={aSeat.isBooked}>
-                                <div class="circle bookedSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick}></div>
+                                <div class="circle bookedSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                  <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" style="position:absolute;top:-4px;left:35px">
+                                    <div class="slds-popover__body">Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.</div>
+                                  </div>
+                                </div>
                               </template>  
                               <template if:false={aSeat.isBooked}>
-                                <div class="circle availableSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick}></div>
+                                <div class="circle availableSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                  <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" style="position:absolute;top:-4px;left:35px">
+                                    <div class="slds-popover__body">Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.</div>
+                                  </div>
+                                </div>
                               </template>
                               
                             </div>

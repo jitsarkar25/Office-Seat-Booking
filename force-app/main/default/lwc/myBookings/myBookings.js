@@ -96,5 +96,10 @@ export default class MyBookings extends LightningElement {
 
     submitFeedback(){
         this.isModalOpen=false;
+        this.template.querySelector('c-feedback-form').submitFeedback();
+    }
+
+    closeModal(){
+        this.isModalOpen = false;
     }
 }

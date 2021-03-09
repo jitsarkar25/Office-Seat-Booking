@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NGP_M0</fullName>
+    <columns>NAME</columns>
+    <columns>Seat_id__c</columns>
+    <columns>IsCloseToAC__c</columns>
+    <columns>isCloseToDoor__c</columns>
+    <columns>isCloseToMeetingRoom__c</columns>
+    <columns>isCloseToWIndow__c</columns>
+    <columns>Floor_Details__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Seat_id__c</field>
+        <operation>startsWith</operation>
+        <value>NGP_M_M0</value>
+    </filters>
+    <label>NGP_M0</label>
+</ListView>

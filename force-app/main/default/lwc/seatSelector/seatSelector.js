@@ -1051,4 +1051,3 @@ export default class SeatSelector extends LightningElement {
         
     }
 }
-

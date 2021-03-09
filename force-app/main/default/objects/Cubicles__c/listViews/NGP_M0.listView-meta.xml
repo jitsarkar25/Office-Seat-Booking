@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NGP_M0</fullName>
+    <columns>NAME</columns>
+    <columns>Cubicle_Id__c</columns>
+    <columns>entry__c</columns>
+    <columns>Building_Name__c</columns>
+    <columns>Floor_Name__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Floor_Name__c</field>
+        <operation>equals</operation>
+        <value>M0</value>
+    </filters>
+    <label>NGP_M0</label>
+</ListView>

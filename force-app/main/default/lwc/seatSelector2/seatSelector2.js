@@ -1,6 +1,7 @@
-import { LightningElement,track } from 'lwc';
+import { LightningElement,track,api } from 'lwc';
 import fetchConfiguration from '@salesforce/apex/SeatSelectorController.fetchConfiguration';
 import getPreferenceValues from '@salesforce/apex/SeatSelectorController.getPreferenceValues';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class SeatSelector extends LightningElement {
 
@@ -35,6 +36,8 @@ export default class SeatSelector extends LightningElement {
     seatListForFloorPlan = [];
     floor;
     selectedSeatId='';
+    location;
+    building;
 
     connectedCallback(){
 
@@ -111,6 +114,11 @@ export default class SeatSelector extends LightningElement {
             for (var seat in this.seatListForFloorPlan) {
               if (this.cubicleListForFloorPlan[cube].cubicleId.includes(this.seatListForFloorPlan[seat].cubicle)) {
                 underSeatIds.Id = this.seatListForFloorPlan[seat].seatId;
+                underSeatIds.isCloseToAC = this.seatListForFloorPlan[seat].isCloseToAC;
+                underSeatIds.isCloseToDoor = this.seatListForFloorPlan[seat].isCloseToDoor;
+                underSeatIds.isCloseToMeetingRoom = this.seatListForFloorPlan[seat].isCloseToMeetingRoom;
+                underSeatIds.isCloseToWindow = this.seatListForFloorPlan[seat].isCloseToWindow;
+                underSeatIds.title="Seat Id: "+this.seatListForFloorPlan[seat].seatId;
                 seatArray.push(JSON.parse(JSON.stringify(underSeatIds)));
               }
             }
@@ -196,9 +204,25 @@ export default class SeatSelector extends LightningElement {
 
     //rasika
     handleSearch(event) {
-       var block = [];
-       var cubicle = [];
-       var seat = [];
+        if(this.location == undefined || this.building == undefined || this.floor == undefined
+            || this.startDate == "" || this.endDate == ""){
+            this.showToast('Please provide all the details to generate floor plan');
+            //alert('Please provide all the details to generate floor plan');
+            return;
+        }
+
+       if(this.totalHrsForSeatBooked > 9){
+            this.showToast('Booking time should not be more than 9 hours');
+            //reset the floor plan
+            this.floorPlan = {};
+            this.lastRow = [];;
+            return;
+       }
+
+        var block = [];
+        var cubicle = [];
+        var seat = [];
+
        for(var key in this.blockList){
         if(this.blockList[key].floor.includes(this.floor)){
             block.push({
@@ -423,10 +447,14 @@ closeConfirmation(){
     this.showConfirmationModal = false;
 }
 
+fromTime;
+toTime;
+totalHrsForSeatBooked;
 startTimeChange(evt){
     debugger;
     var startTime = evt.target.value;
     var d = new Date(startTime);
+    this.fromTime = new Date(startTime);
     var minutes = d.getMinutes() == 0 ? '00' : d.getMinutes();
     var hour = d.getHours() == 0 ? '12' : d.getHours() > 12 ? d.getHours() - 12 : d.getHours();
     var ampm = d.getHours() >= 12 ? 'PM' : 'AM';
@@ -438,12 +466,49 @@ endTimeChange(evt){
     debugger;
     var endTime = evt.target.value;
     var d = new Date(endTime);
+    this.toTime = new Date(endTime);
     var minutes = d.getMinutes() == 0 ? '00' : d.getMinutes();
     var hour = d.getHours() == 0 ? '12' : d.getHours() > 12 ? d.getHours() - 12 : d.getHours();
     var ampm = d.getHours() >= 12 ? 'PM' : 'AM';
     var month = d.getMonth()+1;
     this.endDate = hour +':'+minutes+' '+ampm+' '+d.getDate()+'/'+month+'/'+d.getFullYear();
+
+    var milliseconds = (this.toTime-this.fromTime);
+    var seconds = milliseconds / 1000;
+    var minutes = seconds / 60;
+    this.totalHrsForSeatBooked = minutes / 60;
 }
 
+    //custom toast implementation
+    message;
+    showToastBar = false;
+    autoCloseTime = 5000;
+ 
+    showToast(message){
+        this.type = 'error',
+        this.message = message;
+        this.showToastBar = true;
+        setTimeout(() =>{
+            this.closeModel();
+        }, this.autoCloseTime);
+    }
+
+    closeModel(){
+        this.showToastBar = false;
+        this.type = '';
+        this.message = '';
+	}
+ 
+    get getIconName(){
+        return 'utility:' + this.type;
+    }
+ 
+    get innerClass(){
+        return 'slds-icon_container slds-icon-utility-' + this.type + ' slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top';
+    }
+ 
+    get outerClass(){
+        return 'slds-notify slds-notify_toast slds-theme_' + this.type;
+    }
 
 }

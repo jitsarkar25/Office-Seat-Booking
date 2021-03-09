@@ -1,20 +1,57 @@
 <template>
     <lightning-record-view-form>
-    <lightning-card title="Feedback Form" icon-name="standard:record">
-        <div class="slds-box slds-theme_default">
-            <label>
-            <lightning-input label="Seat No." class="slds-m-bottom_large"></lightning-input>
-            </label>
+        <div class="slds-m-top_medium slds-m-bottom_x-large">
+            <div class="slds-p-around_medium lgc-bg">
+                <div class="style1">
+                    <lightning-layout horizontal-align="stretch">  
+                        <lightning-layout-item flexibility="auto" padding="around-small">
+                                <p class="field-title" title="BookingId">Booking Id</p>
+                                <label>
+                                    {bookingId}
+                                </label>
+                        </lightning-layout-item>
+                    </lightning-layout>
 
-            <label>
-            <lightning-input label="Employee No." class="slds-m-bottom_large"></lightning-input>
-            </label>
+                    <div class="style2">
+                    <lightning-layout horizontal-align="stretch">  
+                        <lightning-layout-item flexibility="auto" padding="around-small">
+                                <p class="field-title" title="SeatNo">Seat No.</p>
+                                <label>
+                                    {seatNumber}
+                                </label>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    </div>
+        
+                    <div class="style2">
+                    <lightning-layout horizontal-align="stretch">  
+                        <lightning-layout-item flexibility="auto" padding="around-small">
+                            <p class="field-title" title="Rating">Rating</p>
+                            <div class="rate">
+                                <input type="radio" id="star5" name="feedbackRating" value="5" onchange={rating} />
+                                <label for="star5" title="text">5 stars</label>
+                                <input type="radio" id="star4" name="feedbackRating" value="4" onchange={rating} />
+                                <label for="star4" title="text">4 stars</label>
+                                <input type="radio" id="star3" name="feedbackRating" value="3" onchange={rating} />
+                                <label for="star3" title="text">3 stars</label>
+                                <input type="radio" id="star2" name="feedbackRating" value="2" onchange={rating} />
+                                <label for="star2" title="text">2 stars</label>
+                                <input type="radio" id="star1" name="feedbackRating" value="1" onchange={rating} />
+                                <label for="star1" title="text">1 star</label>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    </div>
 
-            <label>
-           <lightning-input label="Comments" onchange={handleNameChange} class="slds-m-bottom_large"></lightning-input>
-           </label>
+                    <lightning-layout horizontal-align="stretch">  
+                        <lightning-layout-item flexibility="auto" padding="around-small">
+                            <p class="field-title" title="Comments">Comments</p>
+                            <lightning-textarea name="Comments" variant="label-hidden" onchange={handleComments} placeholder="type here..."></lightning-textarea>
+                        </lightning-layout-item>
+                    </lightning-layout>
 
+                </div>
+            </div>
        </div>
-    </lightning-card>
     </lightning-record-view-form>
 </template>

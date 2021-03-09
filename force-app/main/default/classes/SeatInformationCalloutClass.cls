@@ -54,13 +54,15 @@ public class SeatInformationCalloutClass {
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://psl-6c-dev-ed.lightning.force.com/services/apexrest/SeatUpsert/');
         request.setMethod('GET');
-       // request.setHeader('Content-Type','application/x-www-form-urlencoded');
-         request.setHeader('Content-Type','application/json');
+        //request.setHeader('Content-Type','application/x-www-form-urlencoded');
+        request.setHeader('Content-Type','application/json');
         //request.setBody('{"username":"vangaurdgrp1@psl.com","password":"Grp@1234EVz6TMyTB31KmBSU5R0gemA8d","grant_type":"password","client_id:"3MVG9fe4g9fhX0E4Y1JzGZWpQG_NgMHi0Zw6jvwjm.NjmtSK10GgapI4_AJRjPs5Vcvq.sB7kCT3MEAcjUx5_","client_secret:"F06E2D580ACFD903E64F799B37AE8FD3854204EA88F7AE5EA6B2A029638D48DA"}');
         HttpResponse response = http.send(request);
-        Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
+         System.debug('resp:' + response);
+        /*Map<String, Object> results = (Map<String, Object>) JSON.deserializeUntyped(response.getBody());
         System.debug(results);
-        String accessToken = (String)results.get('status');
+        String status = (String)results.get('status');
+         System.debug(status);*/
         //connectionCalloutBasic(accessToken);
         // Parse the JSON response
         /*if (response.getStatusCode() != 201) {
