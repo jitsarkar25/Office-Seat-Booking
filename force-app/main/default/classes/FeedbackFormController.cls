@@ -10,6 +10,7 @@ public without sharing class FeedbackFormController {
         if(dataMap != null){
             Feedback__c feedback = new Feedback__c();
             feedback.Seat_Number__c = dataMap.get('seatNumber');
+            feedback.Seat_Information__c = dataMap.get('seatNumber');
             feedback.Rating__c = Integer.valueof(dataMap.get('feedbackRating'));
             feedback.Comments__c = dataMap.get('feedbackComments');
             feedbackList.add(feedback);

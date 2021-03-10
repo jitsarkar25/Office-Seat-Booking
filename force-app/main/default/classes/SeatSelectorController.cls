@@ -1,8 +1,8 @@
 public without sharing class SeatSelectorController {
     public SeatSelectorController() {
-
+        
     }
-
+    
     @AuraEnabled(cacheable=true)
     public static String fetchConfiguration() {
         ConfigWrapper configWrap = new ConfigWrapper();
@@ -10,13 +10,13 @@ public without sharing class SeatSelectorController {
         List<Buildings__c> buildings = [select Name__c,Location__r.Name__c from Buildings__c];
         List<Floors__c> floors = [select Name__c,Building__r.Name__c,Columns__c from Floors__c];
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
-
+        
         List<Blocks__c> blocks = [select Block_Id__c,Floor__r.Name__c,isMeetingRoom__c,IsWindow__c,
-                                    Meeting_Room__c,Window__c from Blocks__c order by Block_Id__c];
+                                  Meeting_Room__c,Window__c from Blocks__c order by Block_Id__c];
         List<Cubicles__c> cubicles = [select Block__r.Block_Id__c,Cubicle_Id__c,entry__c from Cubicles__c order by Cubicle_Id__c];
         List<Seats__c> seats = [select Cubicle__r.Cubicle_Id__c,IsCloseToAC__c,isCloseToDoor__c,
                                 isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seats__c];
-
+        
         configWrap.buildings = new List<ConfigWrapper.buildingWrapper>();
         for(Buildings__c building: buildings){
             ConfigWrapper.buildingWrapper buildingData = new ConfigWrapper.buildingWrapper();
@@ -24,14 +24,14 @@ public without sharing class SeatSelectorController {
             buildingData.location = building.Location__r.Name__c;
             configWrap.buildings.add(buildingData);
         }
-
+        
         configWrap.locations = new List<ConfigWrapper.locationWrapper>();
         for(Location__c location: locations){
             ConfigWrapper.locationWrapper locationData = new ConfigWrapper.locationWrapper();
             locationData.location = location.Name__c;
             configWrap.locations.add(locationData);
         }
-
+        
         configWrap.floors = new List<ConfigWrapper.floorWrapper>();
         for(Floors__c floor: floors){
             ConfigWrapper.floorWrapper floorData = new ConfigWrapper.floorWrapper();
@@ -40,14 +40,14 @@ public without sharing class SeatSelectorController {
             floorData.columns = floor.Columns__c;
             configWrap.floors.add(floorData);
         }
-
+        
         configWrap.Preferences = new List<ConfigWrapper.PreferenceWrapper>();
         for(Preferences__mdt preference: preferences){
             ConfigWrapper.PreferenceWrapper PreferenceData = new ConfigWrapper.PreferenceWrapper();
             PreferenceData.preference = preference.label;
             configWrap.Preferences.add(PreferenceData);
         }
-
+        
         configWrap.blocks = new List<ConfigWrapper.blockWrapper>();
         for(Blocks__c block: blocks){
             ConfigWrapper.blockWrapper blockData = new ConfigWrapper.blockWrapper();
@@ -60,7 +60,7 @@ public without sharing class SeatSelectorController {
             blockData.window = block.Window__c;
             configWrap.blocks.add(blockData);
         }
-
+        
         configWrap.cubicles = new List<ConfigWrapper.cubicleWrapper>();
         for(Cubicles__c cubicle: cubicles){
             ConfigWrapper.cubicleWrapper cubicleData = new ConfigWrapper.cubicleWrapper();
@@ -70,7 +70,7 @@ public without sharing class SeatSelectorController {
             cubicleData.entry = cubicle.entry__c;
             configWrap.cubicles.add(cubicleData);
         }
-
+        
         configWrap.seats = new List<ConfigWrapper.seatWrapper>();
         for(Seats__c seat: seats){
             ConfigWrapper.seatWrapper seatData = new ConfigWrapper.seatWrapper();
@@ -83,10 +83,10 @@ public without sharing class SeatSelectorController {
             seatData.isCloseToWindow = seat.isCloseToWIndow__c;
             configWrap.seats.add(seatData);
         }
-
+        
         return JSON.serialize(configWrap);
     }
-
+    
     @AuraEnabled
     public static List < Map < String, String >> getPreferenceValues(){
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
@@ -94,11 +94,26 @@ public without sharing class SeatSelectorController {
         for(Preferences__mdt preference: preferences){
             Map < String, String > values = new Map < String, String > {
                 'key' => preference.label,
-                'value' => preference.label
-            };
-            options.add(values);
+                    'value' => preference.label
+                    };
+                        options.add(values);
         }
         return options;
     }
     
+    @AuraEnabled
+    public static List<String> loginUser(String empId){
+        Map<String,String> aMap = new Map<String,String>();
+        
+        aMap.put('empId',empId);
+        
+        return SeatInformationCalloutRequestor.callLoginAPI(aMap);
+    }
+    
+    @AuraEnabled
+    public static List<String> bookSeat(Map<String,String> bookingDetails){
+        
+        
+        return SeatInformationCalloutRequestor.callSeatBookingAPI(bookingDetails);
+    }
 }

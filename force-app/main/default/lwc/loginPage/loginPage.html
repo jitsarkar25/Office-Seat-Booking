@@ -1,0 +1,43 @@
+<template>
+    <template if:true={loginPage}>
+        <div style="background-image: url('https://get.clt.re/wp-content/uploads/2014/10/Parallax-Background-Light-1_1-02.jpg?w=640');">
+        <div style="height:100vh;">
+            <div class="slds-p-around_medium lgc-bg">
+                <div class="style">
+                    <div class="slds-align_absolute-center">
+                        <lightning-card style="width:400px; margin-top:30vh">
+                            <template if:false={loggedIn}>
+                                <lightning-layout horizontal-align="stretch">  
+                                    <lightning-layout-item flexibility="auto" padding="around-small">
+                                        <lightning-input type="text" label="Employee Id" value={value} onchange={captureempId}></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                        
+
+                                <lightning-layout horizontal-align="stretch">  
+                                    <lightning-layout-item flexibility="auto" padding="around-small">
+                                        <lightning-button class="slds-align_absolute-center" label="Continue" onclick={continueUser}> </lightning-button>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                            <template if:true={loggedIn}>
+                                <div class="slds-align_absolute-center">
+                                    <lightning-button label="Book a Seat" onclick={bookASeat}  class="slds-m-around_large"> </lightning-button>
+                                    <lightning-button label="My Booking" onclick={myBookings}  class="slds-m-around_large"> </lightning-button>
+                                </div>
+                            </template>
+                        </lightning-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>  
+    </template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+    <template if:true={seatSelector}>
+        <c-seat-selector2 userdetails={userDetails}></c-seat-selector2>
+    </template>
+</template>

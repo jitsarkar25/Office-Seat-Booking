@@ -72,7 +72,7 @@ public class SeatBookingResponseWrapper {
 				}
 			}
 		}
-        public Seat_Information__c getObject(){
+        public Seat_Information__c getObject(String status){
         List<Seat_Information__c> seatInfos = new List<Seat_Information__c> ();
         seatInfos = [select Id,Name,Status__c,Total_Times_Booked__C, Total_Times_Occupied__C from Seat_Information__c where Name=: this.seatNumber];
         Seat_Information__c seatInfo;
@@ -81,8 +81,8 @@ public class SeatBookingResponseWrapper {
         else
           seatInfo = seatInfos[0];
          seatInfo.Name= this.seatNumber;
-         seatInfo.Total_Times_Booked__c =seatInfo.Total_Times_Booked__c + 1;
-         seatInfo.Total_Times_Occupied__C =seatInfo.Total_Times_Occupied__C + 1;
+         seatInfo.Total_Times_Booked__c =status == 'BOOKED' ? seatInfo.Total_Times_Booked__c + 1: seatInfo.Total_Times_Booked__c;
+         seatInfo.Total_Times_Occupied__C = status == 'OCCUPIED' ? seatInfo.Total_Times_Occupied__C + 1: seatInfo.Total_Times_Occupied__C ;
          seatInfo.Status__c =this.status;
         //seatInfo.Last_Booked_Date__c =this.lastBookedDate 
         //seatInfo.Seat_Speciality__c = this.speciality;

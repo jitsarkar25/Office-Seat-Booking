@@ -1,0 +1,11 @@
+.height { 
+        height: 100%; 
+        margin: 0; 
+} 
+.bg { 
+        background-image: url("https://www.webfx.com/blog/images/assets/cdn.sixrevisions.com/0431-04_responsive_bg_example_02resto.jpg"); 
+        height: 500px; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        background-size: cover; 
+}

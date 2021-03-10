@@ -2,6 +2,7 @@ import { LightningElement,track,api } from 'lwc';
 import fetchConfiguration from '@salesforce/apex/SeatSelectorController.fetchConfiguration';
 import getPreferenceValues from '@salesforce/apex/SeatSelectorController.getPreferenceValues';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import bookSeat from '@salesforce/apex/SeatSelectorController.bookSeat';
 
 export default class SeatSelector extends LightningElement {
 
@@ -39,6 +40,8 @@ export default class SeatSelector extends LightningElement {
     location;
     building;
 
+    @api userdetails={};
+
     connectedCallback(){
 
         const promises = [
@@ -51,13 +54,14 @@ export default class SeatSelector extends LightningElement {
             this.prefernceOptions = responseArr[0];
             this.parseConfigResponse(responseArr[1]);
             this.menuLoaded = true;
+            this.handleLocationChange('',this.userdetails.baseLocation);
         });
         debugger;
     }
 
     buildingOptions = [];
-    handleLocationChange(event) {
-        this.location = event.detail.value; 
+    handleLocationChange(event,loc) {
+        this.location = loc || event.detail.value; 
         var building = [];   
         for(var key in this.buildingList){
             if(this.buildingList[key].location.includes(this.location)){
@@ -206,13 +210,13 @@ export default class SeatSelector extends LightningElement {
     handleSearch(event) {
         if(this.location == undefined || this.building == undefined || this.floor == undefined
             || this.startDate == "" || this.endDate == ""){
-            this.showToast('Please provide all the details to generate floor plan');
+            this.showToast('Please provide all the details to generate floor plan','error');
             //alert('Please provide all the details to generate floor plan');
             return;
         }
 
        if(this.totalHrsForSeatBooked > 9){
-            this.showToast('Booking time should not be more than 9 hours');
+            this.showToast('Booking time should not be more than 9 hours','error');
             //reset the floor plan
             this.floorPlan = {};
             this.lastRow = [];;
@@ -439,7 +443,7 @@ seatclick(evt){
     
 }
 
-bookSeat(evt){
+bookSeatModal(evt){
     this.showConfirmationModal = true;
 }
 
@@ -484,8 +488,8 @@ endTimeChange(evt){
     showToastBar = false;
     autoCloseTime = 5000;
  
-    showToast(message){
-        this.type = 'error',
+    showToast(message,type){
+        this.type = type,
         this.message = message;
         this.showToastBar = true;
         setTimeout(() =>{
@@ -509,6 +513,49 @@ endTimeChange(evt){
  
     get outerClass(){
         return 'slds-notify slds-notify_toast slds-theme_' + this.type;
+    }
+
+    bookSeatConf(evt){
+        var bookDetails={};
+        bookDetails['empId']=this.userdetails.id;
+        bookDetails['seatNo']=this.selectedSeatId;
+        bookDetails['fromTime']=this.fromTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
+        bookDetails['toTime']=this.toTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
+
+        bookSeat({bookingDetails: bookDetails}).then((resp) =>{
+           if(resp[0] == 'Success'){
+               var obj = JSON.parse(resp[1]);
+               if(obj.status == 200){
+                this.showToast('Seat Booked Successfully','success');
+                this.markSeatBooked(this.selectedSeatId);
+                this.closeConfirmation();
+               }
+               else if(obj.statusText){
+                this.showToast(obj.statusText,'error');
+               }
+               else{
+                this.showToast('Something went wrong. Please try later','error');
+               }
+           }
+           else{
+            this.showToast('Something went wrong. Please try later','error');
+           }
+        });
+    }
+
+    markSeatBooked(seatId){
+        this.floorPlan.row.forEach((arow)=>{
+            arow.forEach((ablock)=>{
+                ablock.cubicle.forEach((acubicle)=>{
+                    acubicle.seat.forEach((aSeat)=>{
+                        if(aSeat.Id == seatId)
+                        {
+                            aSeat.isBooked=true;
+                        }
+                    })
+                })
+            })
+        });
     }
 
 }

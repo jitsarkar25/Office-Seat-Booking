@@ -17,30 +17,40 @@ public class SeatInformationUtility {
     }
     
     public static String upsertBookedSeatInformation(String seat_information){
-        
+        //OCCUPIED
+        //RETURNED
         try{
-            seat_information = seat_information.replace('"object"', '"object_Z"');
+            seat_information = seat_information.replace('"object":""', '"object_Z":null');
+            System.debug('seat_information: '+seat_information);
             SeatBookingResponseWrapper seatInformation = (SeatBookingResponseWrapper)JSON.deserialize(seat_information, SeatBookingResponseWrapper.class);
             List<Seat_Information__c> seatsToUpsert = new List<Seat_Information__c>();
             System.debug('seatInformation: '+seatInformation);
-            //for(SeatInformationWrapper.Seat_information seatInfo: seatInformationList.seat_information){
-            if(seatInformation.object_Z.status == 'BOOKED')
-                seatsToUpsert.add(seatInformation.Object_Z.getObject());
-            else
-                return 'Seat Already Booked';
-            //}
-            
+            if(seatInformation.status == 200){
+                if(seatInformation.object_Z.status == 'BOOKED'){
+                   seatsToUpsert.add(seatInformation.Object_Z.getObject(seatInformation.object_Z.status)); 
+                }else if(seatInformation.object_Z.status == 'OCCUPIED'){
+                    seatsToUpsert.add(seatInformation.Object_Z.getObject(seatInformation.object_Z.status));
+                }else if(seatInformation.object_Z.status == 'RETURNED'){
+                  seatsToUpsert.add(seatInformation.Object_Z.getObject(seatInformation.object_Z.status));  
+                }    
+            }else{
+                return String.isBlank(seatInformation.statusText)?'Something went wrong':seatInformation.statusText;
+            }
             upsert seatsToUpsert Name;
         }catch(Exception e){
+            System.debug(e.getStackTraceString());
             return e.getMessage();
         }
         
-        return 'Successfully Booked';
+        return 'Success';
     }
     
-    public String returnTrendingSeats(Map<String,String> keyFilters){
+    public List<String> returnTrendingSeats(Map<String,String> keyFilters){
         String city = keyFilters.get('city') != null ? keyFilters.get('city') : '';
-        
+        String building = keyFilters.get('building') != null ? keyFilters.get('building') : '';
+        String floor = keyFilters.get('floor') != null ? keyFilters.get('floor') : '';
+        String n_top_result = keyFilters.get('n_top_result') != null ? keyFilters.get('n_top_result') : '3';
+        String city_building_floor_key = city+'_'+building+'_'+floor;
         List <Report> reportList = [SELECT Id,DeveloperName FROM Report where 
                                     DeveloperName = 'Report_Trend_Analysis_iqZ'];
         String reportId = (String)reportList.get(0).get('Id');
@@ -69,14 +79,18 @@ public class SeatInformationUtility {
         //Reports.ReportDetailRow detailRow = factDetails.getRows()[0];
         
         System.debug('Top Trending seats of '+ city+ ' are: ');
-        Integer i=5;
+        Integer i= Integer.valueOf(n_top_result);
         List<String> trendingSeatNos = new List<String>();
         for(Reports.ReportDetailRow detailRow : factDetails.getRows()){
             --i;
+            String seatNo = detailRow.getDataCells()[0].getLabel();
+            
+            if(seatNo.startsWithIgnoreCase(city_building_floor_key))
             trendingSeatNos.add(detailRow.getDataCells()[0].getLabel());
             if(i==0)
-                break;
+              break;
         }
-        return JSON.serialize(trendingSeatNos);
+        
+        return trendingSeatNos;
     }
 }

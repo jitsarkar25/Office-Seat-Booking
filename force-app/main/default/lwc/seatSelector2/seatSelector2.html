@@ -30,14 +30,14 @@
   
   
     <div class="topbar">
-      <lightning-button variant="brand" label="Book Seat"  onclick ={bookSeat} disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
+      <lightning-button variant="brand" label="Book Seat"  onclick ={bookSeatModal} disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
     </div>
     <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div id="mainSelection" class="row content text-center slds-grid slds-gutters" >
       <div class="slds-col slds-size_3-of-12 leftDetails ">
     
-          <p class="slds-align_absolute-center slds-text-heading_large" >Pooja Tewani</p>
-          <p class="slds-align_absolute-center">Emp id: 204562</p>
+          <p class="slds-align_absolute-center slds-text-heading_large" >{userdetails.Name}</p>
+          <p class="slds-align_absolute-center">Emp id: {userdetails.id}</p>
         
       <template if:true={menuLoaded}>
         <div style="text-align: left; margin-top: 10vh;">
@@ -47,7 +47,7 @@
                <img class="slds-col slds-size_2-of-12 menuicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/city.png"/>  
               <lightning-combobox
                   class="slds-col slds-size_10-of-12 blackFont"
-                  value={value}
+                  value={userdetails.baseLocation}
                   placeholder="Select City"
                   options={cityOptions}
                   onchange={handleLocationChange}
@@ -124,16 +124,10 @@
                             <div class="slds-col slds-size_1-of-2" key={aSeat.Id} title={aSeat.Id}>
                               <template if:true={aSeat.isBooked}>
                                 <div class="circle bookedSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
-                                  <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" style="position:absolute;top:-4px;left:35px">
-                                    <div class="slds-popover__body">Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.</div>
-                                  </div>
                                 </div>
                               </template>  
                               <template if:false={aSeat.isBooked}>
                                 <div class="circle availableSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
-                                  <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" style="position:absolute;top:-4px;left:35px">
-                                    <div class="slds-popover__body">Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi.</div>
-                                  </div>
                                 </div>
                               </template>
                               
@@ -208,7 +202,7 @@
            </div>
           <footer class="slds-modal__footer">
             <button class="slds-button slds-button_neutral" onclick={closeConfirmation}>Cancel</button>
-            <button class="slds-button slds-button_brand">Book</button>
+            <button class="slds-button slds-button_brand" onclick={bookSeatConf}>Book</button>
           </footer>
         </div>
       </section>
