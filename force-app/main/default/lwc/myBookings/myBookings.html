@@ -1,7 +1,7 @@
 <template>
     <div class="topbar">
        <div>
-           <p class="loggedInUser">Jit Sarkar</p>
+           <p class="loggedInUser">{userdetails.Name}</p>
        </div>
     </div>
     
@@ -29,7 +29,7 @@
          <template for:each={mybookings} for:item="aBooking">
                 <tr class="slds-hint-parent" key={aBooking.booking_id}>
                 <td >
-                    <div class="slds-truncate"> {aBooking.seat_id}</div>
+                    <div class="slds-truncate"> {aBooking.seatNumber}</div>
                 </td>
                 <td >
                     <div class="slds-truncate"> {aBooking.booked_from}</div>
@@ -42,17 +42,17 @@
                 </td>
                 <template if:true={aBooking.isFeedBackBtn}>
                     <td >
-                        <lightning-button variant="brand-outline" label="Feedback" title="Primary action" class="slds-m-left_x-small" data-seatid={aBooking.seat_id} data-bookid={aBooking.booking_id} onclick={giveFeedback}></lightning-button>
+                        <lightning-button variant="brand-outline" label="Feedback" title="Primary action" class="slds-m-left_x-small" data-seatid={aBooking.seatNumber} data-bookid={aBooking.bookingId} onclick={giveFeedback}></lightning-button>
                     </td>
                 </template>
                 <template if:true={aBooking.isOccupyBtn}>
                     <td >
-                        <lightning-button variant="brand" label="Occupy" title="Primary action" class="slds-m-left_x-small" data-bookid={aBooking.booking_id} onclick={occpuySeat}></lightning-button>
+                        <lightning-button variant="brand" label="Occupy" title="Primary action" class="slds-m-left_x-small" data-seatid={aBooking.seatNumber} data-bookid={aBooking.bookingId} onclick={occupySeat}></lightning-button>
                     </td>
                 </template>
                 <template if:true={aBooking.isReturnBtn}>
                     <td >
-                        <lightning-button variant="destructive" label="Return" title="Primary action" class="slds-m-left_x-small" data-bookid={aBooking.booking_id} onclick={returnSeat}></lightning-button>
+                        <lightning-button variant="destructive" label="Release" title="Primary action" class="slds-m-left_x-small" data-seatid={aBooking.seatNumber} data-bookid={aBooking.bookingId} onclick={returnSeat}></lightning-button>
                     </td>
                 </template>
                 <template if:true={aBooking.isFeedbackGiven}>
@@ -92,4 +92,9 @@
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
+
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+    
 </template>

@@ -27,7 +27,8 @@ public class SeatInformationCalloutRequestor {
         }
         return responseList;
     }
-    public static String callSeatOccupyAPI(Map<String,String> seatBookingData){
+    public static List<String> callSeatOccupyAPI(Map<String,String> seatBookingData){
+        List<String> responseList = new List<String>();
         Http http = new Http();
         HttpRequest request = getBasicRequestInfo('Occupy',seatBookingData);
         String apiRequestBody = getBookingApiRequest(seatBookingData);
@@ -35,12 +36,18 @@ public class SeatInformationCalloutRequestor {
         HttpResponse response = http.send(request);
         System.debug('resp body ---->'+response.getBody());
         if (response.getStatusCode() == 200) {
-            
-            return SeatInformationUtility.upsertBookedSeatInformation(response.getBody());
+            SeatInformationUtility.upsertBookedSeatInformation(response.getBody());
+            responseList.add('Success');
+            responseList.add(response.getBody());
         }
-        return 'Something went wrong.. Hold Tight!!';
+        else{
+            responseList.add('Error');
+            responseList.add('Something went wrong.. Please try again!!');
+        }
+        return responseList;
     }
-    public static String callSeatReturnAPI(Map<String,String> seatBookingData){
+    public static List<String> callSeatReturnAPI(Map<String,String> seatBookingData){
+        List<String> responseList = new List<String>();
         Http http = new Http();
         HttpRequest request = getBasicRequestInfo('Return',seatBookingData);
         String apiRequestBody = getBookingApiRequest(seatBookingData);
@@ -48,23 +55,33 @@ public class SeatInformationCalloutRequestor {
         HttpResponse response = http.send(request);
         System.debug('resp body ---->'+response.getBody());
         if (response.getStatusCode() == 200) {
-            
-            return SeatInformationUtility.upsertBookedSeatInformation(response.getBody());
+ 			SeatInformationUtility.upsertBookedSeatInformation(response.getBody());
+            responseList.add('Success');
+            responseList.add(response.getBody());
         }
-        return 'Something went wrong.. Hold Tight!!';
+        else{
+            responseList.add('Error');
+            responseList.add('Something went wrong.. Please try again!!');
+        }
+        return responseList;
     }
-    public static String callMyBookingsAPI(Map<String,String> seatBookingData){
+    public static List<String> callMyBookingsAPI(Map<String,String> seatBookingData){
+        List<String> responseList = new List<String>();
         Http http = new Http();
         HttpRequest request = getBasicRequestInfo('My_Booking',seatBookingData);
         String apiRequestBody = getBookingApiRequest(seatBookingData);
-        request.setBody(apiRequestBody);
         HttpResponse response = http.send(request);
         System.debug('resp body ---->'+response.getBody());
         if (response.getStatusCode() == 200) {
+            responseList.add('Success');
+            responseList.add(SeatInformationUtility.getBookingHistory(response.getBody()));
             
-            return SeatInformationUtility.getBookingHistory(response.getBody());
         }
-        return 'Something went wrong.. Hold Tight!!';
+        else{
+          responseList.add('Error');  
+          responseList.add('No Booking Data');
+        }
+        return responseList;
     }
     
     

@@ -118,7 +118,33 @@ public without sharing class SeatSelectorController {
     }
     
     @AuraEnabled
+    public static List<String> returnSeat(Map<String,String> bookingDetails){
+        System.debug('bookingDetails. ----> '+bookingDetails);
+        
+        return SeatInformationCalloutRequestor.callSeatReturnAPI(bookingDetails);
+    }
+    
+    @AuraEnabled
+    public static List<String> occupySeat(Map<String,String> bookingDetails){
+        System.debug('bookingDetails. ----> '+bookingDetails);
+        
+        return SeatInformationCalloutRequestor.callSeatReturnAPI(bookingDetails);
+    }
+    
+    @AuraEnabled
     public static List<String> getAllBookedSeats(Map<String,String> timeDetails){
         return SeatInformationCalloutRequestor.callGetAllBookedSeatsAPI(timeDetails);
     }
+    
+    @AuraEnabled
+    public static List<String> getMyBookedSeats(Map<String,String> userDetails){
+        return SeatInformationCalloutRequestor.callMyBookingsAPI(userDetails);
+    }
+    
+    @AuraEnabled
+    public static List<Feedback__c> getFeedback(String empId){
+        return [Select id, Employee_Number__c, Booking_Id__c , Rating__c  from Feedback__c where Employee_Number__c=:empId];
+    }
+    
+    
 }

@@ -208,7 +208,9 @@
       </section>
       <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
-  
+    <template if:true={isLoading}>
+      <lightning-spinner alternative-text="Loading"></lightning-spinner>
+   </template>
   
   
   </template>

@@ -1,6 +1,6 @@
 public class SeatInformationUtility {
     
-    public static String upsertSeatInformation(String seat_informations){
+    /*public static String upsertSeatInformation(String seat_informations){
         
         SeatInformationWrapper seatInformationList = (SeatInformationWrapper)JSON.deserialize(seat_informations, SeatInformationWrapper.class);
         List<Seat_Information__c> seatsToUpsert = new List<Seat_Information__c>();
@@ -14,13 +14,14 @@ public class SeatInformationUtility {
         }
         
         return 'Successfully updated';
-    }
+    }*/
     
     public static String upsertBookedSeatInformation(String seat_information){
         //OCCUPIED
         //RETURNED
         try{
             seat_information = seat_information.replace('"object":""', '"object_Z":null');
+            seat_information = seat_information.replace('"object"', '"object_Z"');
             System.debug('seat_information: '+seat_information);
             SeatBookingResponseWrapper seatInformation = (SeatBookingResponseWrapper)JSON.deserialize(seat_information, SeatBookingResponseWrapper.class);
             List<Seat_Information__c> seatsToUpsert = new List<Seat_Information__c>();
@@ -43,6 +44,34 @@ public class SeatInformationUtility {
         }
         
         return 'Success';
+    }
+
+     public static String getBookingHistory(String seatInformation){
+        //OCCUPIED
+        //RETURNED
+        try{
+            seatInformation = seatInformation.replace('"object"', '"object_Z"');
+            System.debug('seat_information: '+seatInformation);
+            SeatBookingHistoryWrapper bookedSeatInformation = (SeatBookingHistoryWrapper)JSON.deserialize(seatInformation, SeatBookingHistoryWrapper.class);
+            //List<SeatBookingHistoryWrapper.object_Z> bookedSeatWrapper = new List<Seat_Information__c>();
+            System.debug('seatInformation: '+bookedSeatInformation);
+            if(bookedSeatInformation.status == 200){
+                System.debug('object_Z: '+bookedSeatInformation.object_Z);
+                if(bookedSeatInformation.object_Z != null && bookedSeatInformation.object_Z.size()>0){
+                    return JSON.serialize(bookedSeatInformation.object_Z);
+                } else{
+                    return 'No Booking History';
+                 }   
+            }else{
+                return String.isBlank(bookedSeatInformation.statusText)?'Something went wrong':bookedSeatInformation.statusText;
+            }
+            
+        }catch(Exception e){
+            System.debug(e.getStackTraceString());
+            return e.getMessage();
+        }
+        
+        //return 'Success';
     }
     
     public List<String> returnTrendingSeats(Map<String,String> keyFilters){
@@ -84,17 +113,13 @@ public class SeatInformationUtility {
         for(Reports.ReportDetailRow detailRow : factDetails.getRows()){
             --i;
             String seatNo = detailRow.getDataCells()[0].getLabel();
-            
+            System.debug('seatNo:'+seatNo+ ' key: '+city_building_floor_key);
             if(seatNo.startsWithIgnoreCase(city_building_floor_key))
             trendingSeatNos.add(detailRow.getDataCells()[0].getLabel());
             if(i==0)
               break;
         }
-        
+        System.debug(JSON.serialize(trendingSeatNos));
         return trendingSeatNos;
     }
-    public static String getBookingHistory(String seat_informations){
-        return '';
-    }
-    
 }

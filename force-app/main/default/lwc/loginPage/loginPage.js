@@ -38,8 +38,13 @@ export default class LoginPage extends LightningElement {
     }
 
     bookASeat(){
-        this.loginPage=false;
-        this.seatSelector=true;
+        const bookSeat = new CustomEvent('bookseat', { detail: this.userDetails});
+        this.dispatchEvent(bookSeat);
+    }
+
+    myBookings(){
+        const mybookings = new CustomEvent('mybookings', { detail: this.userDetails});
+        this.dispatchEvent(mybookings);
     }
 
 

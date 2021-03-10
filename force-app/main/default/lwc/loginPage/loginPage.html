@@ -1,5 +1,4 @@
 <template>
-    <template if:true={loginPage}>
         <div style="background-image: url('https://get.clt.re/wp-content/uploads/2014/10/Parallax-Background-Light-1_1-02.jpg?w=640');">
         <div style="height:100vh;">
             <div class="slds-p-around_medium lgc-bg">
@@ -33,11 +32,9 @@
             </div>
         </div>
         </div>  
-    </template>
+
     <template if:true={isLoading}>
         <lightning-spinner alternative-text="Loading"></lightning-spinner>
     </template>
-    <template if:true={seatSelector}>
-        <c-seat-selector2 userdetails={userDetails}></c-seat-selector2>
-    </template>
+    
 </template>

@@ -40,11 +40,12 @@ export default class SeatSelector extends LightningElement {
     selectedSeatId='';
     location;
     building;
+    isLoading=false;
 
     @api userdetails={};
 
     connectedCallback(){
-
+        this.isLoading=true;
         const promises = [
             getPreferenceValues(),
             fetchConfiguration()
@@ -56,6 +57,7 @@ export default class SeatSelector extends LightningElement {
             this.parseConfigResponse(responseArr[1]);
             this.menuLoaded = true;
             this.handleLocationChange('',this.userdetails.baseLocation);
+            this.isLoading=false;
         });
         debugger;
     }
@@ -274,9 +276,10 @@ export default class SeatSelector extends LightningElement {
         var bookedSeatDets={};
         bookedSeatDets['fromTime']=this.fromTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
         bookedSeatDets['toTime']=this.toTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
+        this.isLoading=true;
 
         getAllBooking({timeDetails: bookedSeatDets}).then((resp)=>{
-           
+            this.isLoading=false;
             if(resp[0] == 'Success'){
                     this.floorPlan = this.generateFloorPlan();
                     var columns = this.floorPlan.columns;
@@ -539,14 +542,18 @@ endTimeChange(evt){
         bookDetails['seatNo']=this.selectedSeatId;
         bookDetails['fromTime']=this.fromTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
         bookDetails['toTime']=this.toTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
-
+        this.isLoading=true;
         bookSeat({bookingDetails: bookDetails}).then((resp) =>{
+            this.isLoading=false;
            if(resp[0] == 'Success'){
                var obj = JSON.parse(resp[1]);
                if(obj.status == 200){
                 this.showToast('Seat Booked Successfully','success');
                 this.markSeatBooked(this.selectedSeatId);
+
                 this.closeConfirmation();
+                const bookedSeat = new CustomEvent('booksuccess', { detail: this.userdetails});
+                this.dispatchEvent(bookedSeat);
                }
                else if(obj.statusText){
                 this.showToast(obj.statusText,'error');
