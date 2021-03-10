@@ -1,7 +1,7 @@
 public without sharing class SeatSelectorController {
     public SeatSelectorController() {
         
-    }
+    } 
     
     @AuraEnabled(cacheable=true)
     public static String fetchConfiguration() {
@@ -112,8 +112,13 @@ public without sharing class SeatSelectorController {
     
     @AuraEnabled
     public static List<String> bookSeat(Map<String,String> bookingDetails){
-        
+        System.debug('bookingDetails. ----> '+bookingDetails);
         
         return SeatInformationCalloutRequestor.callSeatBookingAPI(bookingDetails);
+    }
+    
+    @AuraEnabled
+    public static List<String> getAllBookedSeats(Map<String,String> timeDetails){
+        return SeatInformationCalloutRequestor.callGetAllBookedSeatsAPI(timeDetails);
     }
 }

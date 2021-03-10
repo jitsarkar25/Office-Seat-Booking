@@ -93,4 +93,8 @@ public class SeatInformationUtility {
         
         return trendingSeatNos;
     }
+    public static String getBookingHistory(String seat_informations){
+        return '';
+    }
+    
 }

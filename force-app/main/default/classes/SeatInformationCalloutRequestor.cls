@@ -2,9 +2,9 @@ public class SeatInformationCalloutRequestor {
     static Map<String,APIvsCalloutInformation__mdt> apiVsCalloutInformation = new Map<String,APIvsCalloutInformation__mdt>();
     static{
         for(APIvsCalloutInformation__mdt apiInfo: [select Label,DeveloperName,Endpoint_Name__c,Http_Method_Type__c from 
-                                                      APIvsCalloutInformation__mdt]){
-            apiVsCalloutInformation.put(apiInfo.DeveloperName,apiInfo);
-        }
+                                                   APIvsCalloutInformation__mdt]){
+                                                       apiVsCalloutInformation.put(apiInfo.DeveloperName,apiInfo);
+                                                   }
         
     }
     
@@ -22,8 +22,8 @@ public class SeatInformationCalloutRequestor {
             responseList.add(response.getBody());
         }
         else{
-             responseList.add('Error');
-             responseList.add('Something went wrong.. Please try again!!');
+            responseList.add('Error');
+            responseList.add('Something went wrong.. Please try again!!');
         }
         return responseList;
     }
@@ -53,6 +53,37 @@ public class SeatInformationCalloutRequestor {
         }
         return 'Something went wrong.. Hold Tight!!';
     }
+    public static String callMyBookingsAPI(Map<String,String> seatBookingData){
+        Http http = new Http();
+        HttpRequest request = getBasicRequestInfo('My_Booking',seatBookingData);
+        String apiRequestBody = getBookingApiRequest(seatBookingData);
+        request.setBody(apiRequestBody);
+        HttpResponse response = http.send(request);
+        System.debug('resp body ---->'+response.getBody());
+        if (response.getStatusCode() == 200) {
+            
+            return SeatInformationUtility.getBookingHistory(response.getBody());
+        }
+        return 'Something went wrong.. Hold Tight!!';
+    }
+    
+    
+    public static List<String> callGetAllBookedSeatsAPI(Map<String,String> timeDetails){
+        List<String> responseList = new List<String>();
+        Http http = new Http();
+        HttpRequest request = getBasicRequestInfo('getAllBookings',timeDetails);
+        //request.setBody(apiRequestBody);
+        HttpResponse response = http.send(request);
+        System.debug('resp body ---->'+response.getBody());
+        if (response.getStatusCode() == 200 || response.getStatusCode() == 204) {
+            responseList.add('Success');
+            responseList.add(response.getBody());
+        }else{
+            responseList.add('Error');
+            responseList.add('Invalid Employee Id');
+        }
+        return responseList;
+    }
     
     
     public static List<String> callLoginAPI(Map<String,String> userDetails){
@@ -60,15 +91,15 @@ public class SeatInformationCalloutRequestor {
         Http http = new Http();
         HttpRequest request = getBasicRequestInfo('Login',userDetails);
         String apiRequestBody = getBookingApiRequest(userDetails);
-        request.setBody(apiRequestBody);
+        //request.setBody(apiRequestBody);
         HttpResponse response = http.send(request);
         System.debug('resp body ---->'+response.getBody());
         if (response.getStatusCode() == 200) {
-             responseList.add('Success');
-             responseList.add(response.getBody());
+            responseList.add('Success');
+            responseList.add(response.getBody());
         }else{
-             responseList.add('Error');
-             responseList.add('Invalid Employee Id');
+            responseList.add('Error');
+            responseList.add('Invalid Employee Id');
         }
         return responseList;
     }
@@ -80,10 +111,10 @@ public class SeatInformationCalloutRequestor {
         for(String key: seatBookingData.keySet()){
             url = url.replace('{'+key+'}', seatBookingData.get(key));
         }
-		request.setEndpoint(url);
+        request.setEndpoint(url);
         System.debug('url ----> '+url);
-		request.setMethod(apiMetaInfo.Http_Method_Type__c );
-		request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+        request.setMethod(apiMetaInfo.Http_Method_Type__c );
+        request.setHeader('Content-Type', 'application/json;charset=UTF-8');
         return request;
     }
     
@@ -92,5 +123,5 @@ public class SeatInformationCalloutRequestor {
         return seatBookWrapper.getRequestBody(seatBookingData); 
     }
     
-
+    
 }

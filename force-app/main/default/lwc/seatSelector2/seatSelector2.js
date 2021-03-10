@@ -3,6 +3,7 @@ import fetchConfiguration from '@salesforce/apex/SeatSelectorController.fetchCon
 import getPreferenceValues from '@salesforce/apex/SeatSelectorController.getPreferenceValues';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import bookSeat from '@salesforce/apex/SeatSelectorController.bookSeat';
+import getAllBooking from '@salesforce/apex/SeatSelectorController.getAllBookedSeats';
 
 export default class SeatSelector extends LightningElement {
 
@@ -270,90 +271,107 @@ export default class SeatSelector extends LightningElement {
                 this.seatListForFloorPlan = seat;
             }
         }
+        var bookedSeatDets={};
+        bookedSeatDets['fromTime']=this.fromTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
+        bookedSeatDets['toTime']=this.toTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
 
-        this.floorPlan = this.generateFloorPlan();
+        getAllBooking({timeDetails: bookedSeatDets}).then((resp)=>{
+           
+            if(resp[0] == 'Success'){
+                    this.floorPlan = this.generateFloorPlan();
+                    var columns = this.floorPlan.columns;
+                    var rows = this.floorPlan.block.length / columns;    
+                    
+                    var blocks =[];
+                    var bottomRow =[];
+                    this.floorPlan.row=[];
+                    this.lastRow=[];
+                    this.acRow=[];
+
+                    if(columns == 3)
+                    {
+                        this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center leftAC"});
+                        this.acRow.push({id: 2,class: "slds-col slds-size_4-of-12 slds-align_absolute-center rightAC"});
+                    }
+                    else if(columns == 2 ){
+                        this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center"});
+                    }
+                    
+
+                    this.floorPlan.block.forEach((item,index) =>{
+                        blocks.push(item);
+                    
+                        if((index+1) % columns == 0 ){
+                            rows--;
+                            blocks.id = index;
+                        if(rows == 0){
+                            blocks.isAC = false;
+                        }
+                        else{
+                            blocks.isAC = true;
+                        }
+                        this.floorPlan.row.push(blocks);
+                        blocks = [];
+                    }
+
+           
+
+                    if(item.window.length > 0){
+                        if(item.window.includes('left')){
+                            item.isLeftWindow = true;
+                        }
+                        if(item.window.includes('right')){
+                            item.isRightWindow = true;
+                        }
+                        if(item.window.includes('top')){
+                            item.isTopWindow = true;
+                        }
+                        if(item.window.includes('bottom')){
+                            this.lastRow.push({id: 1,isBottomWindow:true});
+                        }
+                    }
+
+                    if(item.meetingRoom.length > 0){
+                        if(item.meetingRoom.includes('left')){
+                            item.isLeftMeeting= true;
+                        }
+                        if(item.meetingRoom.includes('right')){
+                            item.isRightMeeting = true;
+                        }
+                        if(item.meetingRoom.includes('top')){
+                            item.isTopMeeting = true;
+                        }
+                        if(item.meetingRoom.includes('bottom')){
+                            this.lastRow.push({id: 2,isBottomMeeting:true});
+                        }
+                    }
+
+                    
+                    item.cubicle.forEach((cube) =>{
+                        cube.class = cube.entry + ' cubicle';
+                    });
+                    if(bottomRow.length > 0){
+                        this.floorPlan.row.push(bottomRow);
+                    }
+                    if(resp[1]!=''){
+                    var obj = JSON.parse(resp[1]);
+                    obj.object.forEach((sId)=>{
+                        this.markSeatBooked(sId);
+                    });
+                }
+        
+                })
+            }
+        });
+        
+
+        
         /*for(var obj in this.floorPlan.block){
             for(var cube in this.floorPlan.block[obj].cubicle){
                 this.floorPlan.block[obj].cubicle[cube].class = this.floorPlan.block[obj].cubicle[cube].entry + ' cubicle';
             }
         }*/
 
-        var columns = this.floorPlan.columns;
-        var rows = this.floorPlan.block.length / columns;    
-        
-        var blocks =[];
-        var bottomRow =[];
-        this.floorPlan.row=[];
-        this.lastRow=[];
-        this.acRow=[];
-
-        if(columns == 3)
-        {
-            this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center leftAC"});
-            this.acRow.push({id: 2,class: "slds-col slds-size_4-of-12 slds-align_absolute-center rightAC"});
-        }
-        else if(columns == 2 ){
-            this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center"});
-        }
-        
-
-        this.floorPlan.block.forEach((item,index) =>{
-            blocks.push(item);
-           
-            if((index+1) % columns == 0 ){
-                rows--;
-                blocks.id = index;
-                if(rows == 0){
-                    blocks.isAC = false;
-                }
-                else{
-                    blocks.isAC = true;
-                }
-                this.floorPlan.row.push(blocks);
-                blocks = [];
-            }
-
-           
-
-            if(item.window.length > 0){
-                if(item.window.includes('left')){
-                    item.isLeftWindow = true;
-                }
-                if(item.window.includes('right')){
-                    item.isRightWindow = true;
-                }
-                if(item.window.includes('top')){
-                    item.isTopWindow = true;
-                }
-                if(item.window.includes('bottom')){
-                    this.lastRow.push({id: 1,isBottomWindow:true});
-                }
-            }
-
-            if(item.meetingRoom.length > 0){
-                if(item.meetingRoom.includes('left')){
-                    item.isLeftMeeting= true;
-                }
-                if(item.meetingRoom.includes('right')){
-                    item.isRightMeeting = true;
-                }
-                if(item.meetingRoom.includes('top')){
-                    item.isTopMeeting = true;
-                }
-                if(item.meetingRoom.includes('bottom')){
-                    this.lastRow.push({id: 2,isBottomMeeting:true});
-                }
-            }
-
-            
-            item.cubicle.forEach((cube) =>{
-                cube.class = cube.entry + ' cubicle';
-            });
-        });
-
-        if(bottomRow.length > 0){
-            this.floorPlan.row.push(bottomRow);
-        }
     }
     
 
