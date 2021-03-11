@@ -1,7 +1,11 @@
 <template>
     <div class="topbar">
        <div>
-           <p class="loggedInUser">{userdetails.Name}</p>
+            <div >
+                <p class="loggedInUser">{userdetails.Name}</p>
+                <img class="refreshicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/refresh--v1.png" onclick={getBookData}/>
+                <img class="backicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/back.png" onclick={goback}/>
+            </div>
        </div>
     </div>
     
@@ -82,7 +86,7 @@
                 </header>
                 <!-- Modal/Popup Box LWC body starts here -->
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <c-feedback-form booking-id={selectedBookId} seat-number={selectedSeatId}></c-feedback-form>
+                    <c-feedback-form booking-id={selectedBookId} seat-number={selectedSeatId} employee-number={userdetails.id}></c-feedback-form>
                 </div>
                 <!-- Modal/Popup Box LWC footer starts here -->
                 <footer class="slds-modal__footer">

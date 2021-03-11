@@ -5,6 +5,7 @@ export default class DeskManagement extends LightningElement {
     seatSelector=false;
     mybookings=false;
     userDetails={};
+    loggedIn =false;
 
     navigateToBookASeat(event){
         debugger;
@@ -26,5 +27,14 @@ export default class DeskManagement extends LightningElement {
         this.loginPage=false;
         this.seatSelector=false;
         this.mybookings=true;
+    }
+
+    goback(event){
+        debugger;
+        this.loggedIn=true;
+        this.userDetails = event.detail;
+        this.loginPage=true;
+        this.seatSelector=false;
+        this.mybookings=false;
     }
 }

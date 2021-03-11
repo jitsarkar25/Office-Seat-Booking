@@ -126,6 +126,25 @@ export default class SeatSelector extends LightningElement {
                 underSeatIds.isCloseToMeetingRoom = this.seatListForFloorPlan[seat].isCloseToMeetingRoom;
                 underSeatIds.isCloseToWindow = this.seatListForFloorPlan[seat].isCloseToWindow;
                 underSeatIds.title="Seat Id: "+this.seatListForFloorPlan[seat].seatId;
+                underSeatIds.popupClass="popup "+this.seatListForFloorPlan[seat].seatId;
+                underSeatIds.popupText=[];
+
+                underSeatIds.popupText.push('Seat Id: '+ this.seatListForFloorPlan[seat].seatId);
+
+                if( this.seatListForFloorPlan[seat].isCloseToAC){
+                    underSeatIds.popupText.push('Close to AC');
+                }
+                if( this.seatListForFloorPlan[seat].isCloseToDoor){
+                    underSeatIds.popupText.push('Close to Entrance');
+                }
+                if( this.seatListForFloorPlan[seat].isCloseToWindow){
+                    underSeatIds.popupText.push('Close to Window');
+                }
+                if( this.seatListForFloorPlan[seat].isCloseToMeetingRoom){
+                    underSeatIds.popupText.push('Close to Meeting Room');
+                }
+
+
                 seatArray.push(JSON.parse(JSON.stringify(underSeatIds)));
               }
             }
@@ -582,5 +601,21 @@ endTimeChange(evt){
             })
         });
     }
+    
+    goback(){
+        const goback = new CustomEvent('back', { detail: this.userdetails});
+        this.dispatchEvent(goback);
+    }
 
+    popupshow(evt){
+        debugger;
+        this.selectedSeatId = evt.target.dataset.seatid;
+        this.template.querySelector('.'+this.selectedSeatId).style.display='block';
+    }
+
+    popuphide(evt){
+        this.template.querySelectorAll('.popup').forEach((pop) =>{
+            pop.style.display='none';
+        });
+    }
 }

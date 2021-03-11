@@ -30,6 +30,8 @@
   
   
     <div class="topbar">
+      <img class="backicon" src="https://img.icons8.com/ios-glyphs/30/ffffff/back.png" onclick={goback}/>
+      
       <lightning-button variant="brand" label="Book Seat"  onclick ={bookSeatModal} disabled={bookBtnDisabled} class="slds-m-left_x-small bookseatbutton"></lightning-button>
     </div>
     <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
@@ -123,12 +125,22 @@
                         <template for:each={aCubicle.seat} for:item="aSeat">
                             <div class="slds-col slds-size_1-of-2" key={aSeat.Id} title={aSeat.Id}>
                               <template if:true={aSeat.isBooked}>
-                                <div class="circle bookedSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                <div class="circle bookedSeat" data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
                                 </div>
                               </template>  
                               <template if:false={aSeat.isBooked}>
-                                <div class="circle availableSeat" title={aSeat.title} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                <div class="circle availableSeat" onmouseover={popupshow} onmouseout={popuphide} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
                                 </div>
+                                
+                                <div class={aSeat.popupClass}>
+                                  <ul>
+                                    <template for:each={aSeat.popupText} for:item="feature">
+                                      <li key={feature}>{feature}</li>
+                                    </template>
+                                  </ul>
+                                </div>
+                                
+                                
                               </template>
                               
                             </div>

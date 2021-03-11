@@ -1,11 +1,11 @@
 <template>
     <template if:true={loginPage}>
-        <c-login-page onbookseat={navigateToBookASeat} onmybookings={navigateToMyBookings}></c-login-page>
+        <c-login-page onbookseat={navigateToBookASeat} onmybookings={navigateToMyBookings} logged-in={loggedIn} user-details={userDetails}></c-login-page>
     </template>
     <template if:true={seatSelector}>
-        <c-seat-selector2 userdetails={userDetails} onbooksuccess={booksuccess}></c-seat-selector2>
+        <c-seat-selector2 userdetails={userDetails} onbooksuccess={booksuccess} onback={goback}></c-seat-selector2>
     </template>
     <template if:true={mybookings}>
-        <c-my-bookings userdetails={userDetails}></c-my-bookings>
+        <c-my-bookings userdetails={userDetails} onback={goback}></c-my-bookings>
     </template>
 </template>

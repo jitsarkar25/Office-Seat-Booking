@@ -1,11 +1,11 @@
-import { LightningElement } from 'lwc';
+import { LightningElement,api } from 'lwc';
 import loginUser from '@salesforce/apex/SeatSelectorController.loginUser';
 
 export default class LoginPage extends LightningElement {
     empId;
-    userDetails;
+    @api userDetails;
     isLoading = false;
-    loggedIn =false;
+    @api loggedIn =false;
     loginPage=true;
     seatSelector=false;
   

@@ -28,7 +28,9 @@ export default class FeedbackForm extends LightningElement {
     submitFeedback() {
         this.dataMap = {'feedbackRating' : this.feedbackRating,
                         'feedbackComments' : this.feedbackComments,
-                        'seatNumber': this.seatNumber}; 
+                        'seatNumber': this.seatNumber,
+                        'bookingId': this.bookingId,
+                        'employeeNumber': this.employeeNumber}; 
         var dataMap = this.dataMap;
         submitFeedback({dataMap})
             .then(result => {
