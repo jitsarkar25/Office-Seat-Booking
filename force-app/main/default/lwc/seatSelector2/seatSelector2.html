@@ -98,12 +98,23 @@
           </div>
   
           <lightning-button variant="brand-outline" label="Search" onclick={handleSearch} class="slds-m-left_x-small slds-m-top_xx-large  slds-align_absolute-center"></lightning-button>
-  
-        
-        </div>
+       </div>
       </template>
       </div>
       <div class="slds-col slds-size_9-of-12 slds-scrollable mainArea">
+        <div class="slds-align_absolute-center" style="margin-top:50px;">
+          <ul>
+            <li class="legend"> <div class="circle availableSeat" aria-describedby="help" aria-disabled="true"></div></li>
+            <li class="legend legendText"> Available </li>
+            <li class="legend"> <div class="circle bookedSeat" aria-describedby="help" aria-disabled="true"></div></li>
+            <li class="legend legendText"> Booked </li>
+            <li class="legend"> <div class="circle trendingSeat" aria-describedby="help" aria-disabled="true"></div></li>
+            <li class="legend legendText"> Trending </li>
+            <li class="legend"> <div class="circle selectedSeat" aria-describedby="help" aria-disabled="true"></div></li>
+            <li class="legend legendText"> Selected </li>
+
+          </ul>
+      </div>
       <div class="entrance">Entrance</div>
       <div class="row slds-grid slds-wrap slds-m-top_xx-large" >
         <template for:each={floorPlan.row} for:item="aRow">
@@ -129,8 +140,14 @@
                                 </div>
                               </template>  
                               <template if:false={aSeat.isBooked}>
-                                <div class="circle availableSeat" onmouseover={popupshow} onmouseout={popuphide} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
-                                </div>
+                                <template if:false={aSeat.isTrending}>
+                                  <div class="circle availableSeat" onmouseover={popupshow} onmouseout={popuphide} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                  </div>
+                                </template>
+                                <template if:true={aSeat.isTrending}>
+                                  <div class="circle trendingSeat" onmouseover={popupshow} onmouseout={popuphide} data-seatid={aSeat.Id} onclick={seatclick} aria-describedby="help" aria-disabled="true">
+                                  </div>
+                                </template>
                                 
                                 <div class={aSeat.popupClass}>
                                   <ul>

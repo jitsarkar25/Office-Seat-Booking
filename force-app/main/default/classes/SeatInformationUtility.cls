@@ -1,21 +1,4 @@
-public class SeatInformationUtility {
-    
-    /*public static String upsertSeatInformation(String seat_informations){
-        
-        SeatInformationWrapper seatInformationList = (SeatInformationWrapper)JSON.deserialize(seat_informations, SeatInformationWrapper.class);
-        List<Seat_Information__c> seatsToUpsert = new List<Seat_Information__c>();
-        for(SeatInformationWrapper.Seat_information seatInfo: seatInformationList.seat_information){
-            seatsToUpsert.add(seatInfo.getObject());
-        }
-        try{
-            upsert seatsToUpsert Name;
-        }catch(Exception e){
-            return e.getMessage();
-        }
-        
-        return 'Successfully updated';
-    }*/
-    
+public without sharing class SeatInformationUtility {
     public static String upsertBookedSeatInformation(String seat_information){
         //OCCUPIED
         //RETURNED
@@ -24,8 +7,8 @@ public class SeatInformationUtility {
             seat_information = seat_information.replace('"object"', '"object_Z"');
             System.debug('seat_information: '+seat_information);
             SeatBookingResponseWrapper seatInformation = (SeatBookingResponseWrapper)JSON.deserialize(seat_information, SeatBookingResponseWrapper.class);
-            List<Seat_Information__c> seatsToUpsert = new List<Seat_Information__c>();
-            System.debug('seatInformation: '+seatInformation);
+            List<Seats__C> seatsToUpsert = new List<Seats__C>();
+            System.debug('seatInformation: '+seatInformation); 
             if(seatInformation.status == 200){
                 if(seatInformation.object_Z.status == 'BOOKED'){
                    seatsToUpsert.add(seatInformation.Object_Z.getObject(seatInformation.object_Z.status)); 
@@ -37,7 +20,7 @@ public class SeatInformationUtility {
             }else{
                 return String.isBlank(seatInformation.statusText)?'Something went wrong':seatInformation.statusText;
             }
-            upsert seatsToUpsert Name;
+            upsert seatsToUpsert Seat_id__c;
         }catch(Exception e){
             System.debug(e.getStackTraceString());
             return e.getMessage();
@@ -79,9 +62,9 @@ public class SeatInformationUtility {
         String building = keyFilters.get('building') != null ? keyFilters.get('building') : '';
         String floor = keyFilters.get('floor') != null ? keyFilters.get('floor') : '';
         String n_top_result = keyFilters.get('n_top_result') != null ? keyFilters.get('n_top_result') : '3';
-        String city_building_floor_key = city+'_'+building+'_'+floor;
+        String cityBuildingFloorKey = city+' - '+floor+' - '+building;
         List <Report> reportList = [SELECT Id,DeveloperName FROM Report where 
-                                    DeveloperName = 'Report_Trend_Analysis_iqZ'];
+                                    DeveloperName = 'Seat_Booking_Analysis_Report_L2f'];
         String reportId = (String)reportList.get(0).get('Id');
         
         // Run a report synchronously
@@ -90,7 +73,7 @@ public class SeatInformationUtility {
         Reports.Dimension dim = results.getGroupingsDown();
         Reports.GroupingValue groupingVal;
         for (Reports.GroupingValue groupingValItem : dim.getGroupings()) {
-            if(groupingValItem .getLabel() == city)
+            if(groupingValItem .getLabel() == cityBuildingFloorKey)
                 groupingVal = groupingValItem; 
             
         }
@@ -113,8 +96,8 @@ public class SeatInformationUtility {
         for(Reports.ReportDetailRow detailRow : factDetails.getRows()){
             --i;
             String seatNo = detailRow.getDataCells()[0].getLabel();
-            System.debug('seatNo:'+seatNo+ ' key: '+city_building_floor_key);
-            if(seatNo.startsWithIgnoreCase(city_building_floor_key))
+            //System.debug('seatNo:'+seatNo+ ' key: '+city_building_floor_key);
+            //if(seatNo.startsWithIgnoreCase(cityBuildingFloorKey))
             trendingSeatNos.add(detailRow.getDataCells()[0].getLabel());
             if(i==0)
               break;

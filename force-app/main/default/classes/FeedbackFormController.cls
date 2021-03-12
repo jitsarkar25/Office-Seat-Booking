@@ -16,6 +16,7 @@ public without sharing class FeedbackFormController {
             feedback.Booking_Id__c = dataMap.get('bookingId');
             feedback.Rating__c = Integer.valueof(dataMap.get('feedbackRating'));
             feedback.Comments__c = dataMap.get('feedbackComments');
+            feedback.Employee_Number__c = dataMap.get('employeeNumber');
             feedbackList.add(feedback);
         }
 

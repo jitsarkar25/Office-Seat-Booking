@@ -72,15 +72,15 @@ public class SeatBookingResponseWrapper {
 				}
 			}
 		}
-        public Seat_Information__c getObject(String status){
-        List<Seat_Information__c> seatInfos = new List<Seat_Information__c> ();
-        seatInfos = [select Id,Name,Status__c,Total_Times_Booked__C, Total_Times_Occupied__C,Last_Booked_Date__c from Seat_Information__c where Name=: this.seatNumber];
-        Seat_Information__c seatInfo;
+        public Seats__C getObject(String status){
+        List<Seats__C> seatInfos = new List<Seats__C> ();
+        seatInfos = [select Id,Seat_Id__c,Status__c,Total_Times_Booked__c, Total_Times_Occupied__c,Last_Booked_Date__c from Seats__c where Seat_id__c=: this.seatNumber];
+        Seats__c seatInfo;
         if(seatInfos.size() == 0)
-          seatInfo = new Seat_Information__c(Total_Times_Booked__c = 0,Total_Times_Occupied__C=0);
+          seatInfo = new Seats__c(Total_Times_Booked__c = 0,Total_Times_Occupied__C=0);
         else
           seatInfo = seatInfos[0];
-         seatInfo.Name= this.seatNumber;
+         seatInfo.Seat_Id__c= this.seatNumber;
          seatInfo.Total_Times_Booked__c =status == 'BOOKED' ? seatInfo.Total_Times_Booked__c + 1: seatInfo.Total_Times_Booked__c;
          seatInfo.Total_Times_Occupied__C = status == 'OCCUPIED' ? seatInfo.Total_Times_Occupied__C + 1: seatInfo.Total_Times_Occupied__C ;
          seatInfo.Last_Booked_Date__c =  status == 'OCCUPIED' ? (DateTime)Json.deserialize(this.bookedFrom, DateTime.class): seatInfo.Last_Booked_Date__c;
@@ -111,13 +111,4 @@ public class SeatBookingResponseWrapper {
 			}
 		} while (depth > 0 && parser.nextToken() != null);
 	}
-    
-    
-	
-
-
-
-
-
-
 }

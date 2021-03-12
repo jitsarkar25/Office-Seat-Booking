@@ -3,19 +3,19 @@ public without sharing class SeatSelectorController {
         
     } 
     
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static String fetchConfiguration() {
         ConfigWrapper configWrap = new ConfigWrapper();
         List<Location__c> locations = [select Name__c from Location__c];
         List<Buildings__c> buildings = [select Name__c,Location__r.Name__c from Buildings__c];
-        List<Floors__c> floors = [select Name__c,Building__r.Name__c,Columns__c from Floors__c];
+        List<Floors__c> floors = [select Name__c,Building__r.Name__c,Columns__c from Floors__c order by Name__c];
         List<Preferences__mdt> preferences = [select label from Preferences__mdt];
         
         List<Blocks__c> blocks = [select Block_Id__c,Floor__r.Name__c,isMeetingRoom__c,IsWindow__c,
                                   Meeting_Room__c,Window__c from Blocks__c order by Block_Id__c];
         List<Cubicles__c> cubicles = [select Block__r.Block_Id__c,Cubicle_Id__c,entry__c from Cubicles__c order by Cubicle_Id__c];
         List<Seats__c> seats = [select Cubicle__r.Cubicle_Id__c,IsCloseToAC__c,isCloseToDoor__c,
-                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seats__c];
+                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seats__c order by seat_id__c];
         
         configWrap.buildings = new List<ConfigWrapper.buildingWrapper>();
         for(Buildings__c building: buildings){
@@ -128,7 +128,7 @@ public without sharing class SeatSelectorController {
     public static List<String> occupySeat(Map<String,String> bookingDetails){
         System.debug('bookingDetails. ----> '+bookingDetails);
         
-        return SeatInformationCalloutRequestor.callSeatReturnAPI(bookingDetails);
+        return SeatInformationCalloutRequestor.callSeatOccupyAPI(bookingDetails);
     }
     
     @AuraEnabled
@@ -143,7 +143,13 @@ public without sharing class SeatSelectorController {
     
     @AuraEnabled
     public static List<Feedback__c> getFeedback(String empId){
-        return [Select id, Employee_Number__c, Booking_Id__c , Rating__c  from Feedback__c where Employee_Number__c=:empId];
+        return [Select id, Employee_Number__c, Booking_Id__c , Rating__c  from Feedback__c where Employee_Number__c=:empId and Booking_Id__c!=null ];
+    }
+    
+    @AuraEnabled
+    public static List<String> getTrendingSeats(Map<String,String> currentVal){
+        SeatInformationUtility utiClass = new SeatInformationUtility();
+		return utiClass.returnTrendingSeats(currentVal);
     }
     
     

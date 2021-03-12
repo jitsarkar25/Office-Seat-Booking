@@ -1,6 +1,6 @@
-@RestResource(urlMapping='/SeatUpsert/*')
+//@RestResource(urlMapping='/SeatUpsert/*')
 global class SeatCreationUpdationAPI {
-    @HttpGet
+    /*@HttpGet
     global static String getBasicSeatInformationInfo() {
         RestRequest request = RestContext.request;
         
@@ -13,7 +13,7 @@ global class SeatCreationUpdationAPI {
          //Map<String, Object> requestBody = (Map<String, Object>) JSON.deserializeUntyped(RestContext.request.requestBody.toString());
     	String seatInfoResult = SeatInformationUtility.upsertSeatInformation(RestContext.request.requestBody.toString());
         return seatInfoResult;
-    }
+    }*/
     
 
 }

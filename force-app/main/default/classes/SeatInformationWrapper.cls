@@ -57,7 +57,7 @@ public class SeatInformationWrapper {
                 }
             }
         }
-        public Seat_Information__c getObject(){
+        /*public Seat_Information__c getObject(){
         Seat_Information__c seatInfo = new Seat_Information__c();
         seatInfo.Name= this.seatId;
         seatInfo.Total_Times_Booked__c =this.totalTimesBooked;
@@ -66,7 +66,7 @@ public class SeatInformationWrapper {
         seatInfo.Seat_Speciality__c = this.speciality;
         //this.averageRating
         return seatInfo;
-        }
+        }*/
     }
     
     

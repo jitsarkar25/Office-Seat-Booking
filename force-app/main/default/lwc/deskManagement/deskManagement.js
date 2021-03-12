@@ -37,4 +37,11 @@ export default class DeskManagement extends LightningElement {
         this.seatSelector=false;
         this.mybookings=false;
     }
+
+    trends(evt){
+        this.loginPage=false;
+        this.seatSelector=false;
+        this.mybookings=true;
+        this.trends=true;
+    }
 }

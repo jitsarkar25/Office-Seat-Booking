@@ -1,5 +1,5 @@
 public class SeatInformationCalloutClass {
-    public static HttpResponse connectionCalloutBasic(String accessToken) {
+    /*public static HttpResponse connectionCalloutBasic(String accessToken) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         String seatId = 'NGP_G_M4_1_1';
@@ -15,7 +15,7 @@ public class SeatInformationCalloutClass {
             request.setEndpoint(response.getHeader('Location'));
             response = new Http().send(request);
           System.debug(response);          
-        }*/
+        }
         // If the request is successful, parse the JSON response.
         if (response.getStatusCode() == 200) {
             // Deserializes the JSON string into collections of primitive data types.
@@ -45,7 +45,7 @@ public class SeatInformationCalloutClass {
                 response.getStatusCode() + ' ' + response.getStatus());
         } else {
             System.debug(response.getBody());
-        }*/
+        }
         return response;
     }   
     
@@ -70,7 +70,7 @@ public class SeatInformationCalloutClass {
                 response.getStatusCode() + ' ' + response.getStatus());
         } else {
             System.debug(response.getBody());
-        }*/
+        }
         return response;
-    }
+    }*/
 }

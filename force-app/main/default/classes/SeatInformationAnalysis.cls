@@ -1,7 +1,7 @@
-@RestResource(urlMapping='/SeatInformation/*')
+//@RestResource(urlMapping='/SeatInformation/*')
 global without sharing class SeatInformationAnalysis {
     
-    @HttpGet
+    /*@HttpGet
     global static String getBasicSeatInformationInfo() {
         RestRequest request = RestContext.request;
         // grab the caseId from the end of the URL
@@ -11,6 +11,6 @@ global without sharing class SeatInformationAnalysis {
                         FROM Seat_Information__c where Name=:seatId];
         
         return result.Last_Booked_Date__c == null ? null : String.valueOf(result.Last_Booked_Date__c);
-    }
+    }*/
 
 }

@@ -303,6 +303,12 @@ cursor: not-allowed;
 .availableSeat{
 background: #0ae86f;
 }
+
+.trendingSeat{
+  background: orange;
+  }
+
+
 .selectedSeat{
 background: #42A5F5;
 }
@@ -344,4 +350,12 @@ background: #42A5F5;
   padding: 20px;
   border-radius: 10px;
   z-index: 100;
+}
+
+.legend{
+  float:left;
+}
+
+.legendText{
+  margin:15px 10px 0 5px;
 }

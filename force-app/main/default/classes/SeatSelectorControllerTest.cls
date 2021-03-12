@@ -63,5 +63,70 @@ public class SeatSelectorControllerTest{
             SeatSelectorController.getPreferenceValues();
         Test.stopTest();
     }
+    
+    @isTest 
+    static void test_loginUser(){
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.loginUser('12345');
+        Test.stopTest();
+    }
+    
+    @isTest 
+    static void test_bookSeat(){
+        Map<String,String> bookingDetail = new Map<String,String>();
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.bookSeat(bookingDetail);
+        Test.stopTest();
+    }
+    
+    @isTest 
+    static void test_returnSeat(){
+        Map<String,String> bookingDetail = new Map<String,String>();
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.returnSeat(bookingDetail);
+        	SeatSelectorController.getFeedback('1234');
+        Test.stopTest();
+    }
+    
+    @isTest 
+    static void test_getAllBookedSeats(){
+        Map<String,String> bookingDetail = new Map<String,String>();
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.getAllBookedSeats(bookingDetail);
+        Test.stopTest();
+    }
+    
+    @isTest 
+    static void test_getMyBookedSeats(){
+        Map<String,String> bookingDetail = new Map<String,String>();
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.getMyBookedSeats(bookingDetail);
+        Test.stopTest();
+    }
+    
+    @isTest 
+    static void test_occupySeat(){
+        Map<String,String> bookingDetail = new Map<String,String>();
+        Test.setMock(HttpCalloutMock.class, new RestMock());
+        Test.startTest();
+            SeatSelectorController.occupySeat(bookingDetail);
+        Test.stopTest();
+    }
+    
+    private class RestMock implements HttpCalloutMock{
+        public HTTPResponse respond(HTTPRequest req){
+            String fullJson = 'your Json Response';
+            HTTPResponse res = new HTTPResponse();
+            res.setHeader('Content-Type', 'text/json');
+            res.setBody(fullJson);
+            res.setStatusCode(200);
+            return res;
+        }
+    }
 
 }

@@ -4,6 +4,7 @@ import getPreferenceValues from '@salesforce/apex/SeatSelectorController.getPref
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import bookSeat from '@salesforce/apex/SeatSelectorController.bookSeat';
 import getAllBooking from '@salesforce/apex/SeatSelectorController.getAllBookedSeats';
+import getTrendingSeats from '@salesforce/apex/SeatSelectorController.getTrendingSeats';
 
 export default class SeatSelector extends LightningElement {
 
@@ -46,9 +47,10 @@ export default class SeatSelector extends LightningElement {
 
     connectedCallback(){
         this.isLoading=true;
+
         const promises = [
             getPreferenceValues(),
-            fetchConfiguration()
+            fetchConfiguration(),
         ];
 
         Promise.all(promises)
@@ -89,6 +91,14 @@ export default class SeatSelector extends LightningElement {
                   });
             }
             this.floorOptions = floor;  
+        }
+    }
+
+    parseTrendingSeats(trendingSeats){
+        if(trendingSeats){
+            trendingSeats.forEach((aSeatId)=>{
+                this.markSeatTrending(aSeatId);
+            })
         }
     }
 
@@ -297,94 +307,27 @@ export default class SeatSelector extends LightningElement {
         bookedSeatDets['toTime']=this.toTime.toISOString().replaceAll(':','%3A').slice(0, -5);;
         this.isLoading=true;
 
-        getAllBooking({timeDetails: bookedSeatDets}).then((resp)=>{
-            this.isLoading=false;
-            if(resp[0] == 'Success'){
-                    this.floorPlan = this.generateFloorPlan();
-                    var columns = this.floorPlan.columns;
-                    var rows = this.floorPlan.block.length / columns;    
-                    
-                    var blocks =[];
-                    var bottomRow =[];
-                    this.floorPlan.row=[];
-                    this.lastRow=[];
-                    this.acRow=[];
+        var trendSeat={};
+        trendSeat.city='NGP';
+        trendSeat.building=this.building;
+        trendSeat.floor=this.floor,
+        trendSeat.n_top_result = '5';
 
-                    if(columns == 3)
-                    {
-                        this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center leftAC"});
-                        this.acRow.push({id: 2,class: "slds-col slds-size_4-of-12 slds-align_absolute-center rightAC"});
-                    }
-                    else if(columns == 2 ){
-                        this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center"});
-                    }
-                    
 
-                    this.floorPlan.block.forEach((item,index) =>{
-                        blocks.push(item);
-                    
-                        if((index+1) % columns == 0 ){
-                            rows--;
-                            blocks.id = index;
-                        if(rows == 0){
-                            blocks.isAC = false;
-                        }
-                        else{
-                            blocks.isAC = true;
-                        }
-                        this.floorPlan.row.push(blocks);
-                        blocks = [];
-                    }
+        const promises = [
+            getAllBooking({timeDetails: bookedSeatDets}),
+            getTrendingSeats({currentVal: trendSeat}),
+        ];
 
-           
-
-                    if(item.window.length > 0){
-                        if(item.window.includes('left')){
-                            item.isLeftWindow = true;
-                        }
-                        if(item.window.includes('right')){
-                            item.isRightWindow = true;
-                        }
-                        if(item.window.includes('top')){
-                            item.isTopWindow = true;
-                        }
-                        if(item.window.includes('bottom')){
-                            this.lastRow.push({id: 1,isBottomWindow:true});
-                        }
-                    }
-
-                    if(item.meetingRoom.length > 0){
-                        if(item.meetingRoom.includes('left')){
-                            item.isLeftMeeting= true;
-                        }
-                        if(item.meetingRoom.includes('right')){
-                            item.isRightMeeting = true;
-                        }
-                        if(item.meetingRoom.includes('top')){
-                            item.isTopMeeting = true;
-                        }
-                        if(item.meetingRoom.includes('bottom')){
-                            this.lastRow.push({id: 2,isBottomMeeting:true});
-                        }
-                    }
-
-                    
-                    item.cubicle.forEach((cube) =>{
-                        cube.class = cube.entry + ' cubicle';
-                    });
-                    if(bottomRow.length > 0){
-                        this.floorPlan.row.push(bottomRow);
-                    }
-                    if(resp[1]!=''){
-                    var obj = JSON.parse(resp[1]);
-                    obj.object.forEach((sId)=>{
-                        this.markSeatBooked(sId);
-                    });
-                }
-        
-                })
-            }
+        Promise.all(promises)
+        .then(responseArr => {
+            this.parseGetAllBookings(responseArr[0]);
+            this.parseTrendingSeats(responseArr[1]);
         });
+
+        /*getAllBooking({timeDetails: bookedSeatDets}).then((resp)=>{
+           
+        });*/
         
 
         
@@ -394,6 +337,95 @@ export default class SeatSelector extends LightningElement {
             }
         }*/
 
+    }
+
+    parseGetAllBookings(resp){
+        this.isLoading=false;
+        if(resp[0] == 'Success'){
+                this.floorPlan = this.generateFloorPlan();
+                var columns = this.floorPlan.columns;
+                var rows = this.floorPlan.block.length / columns;    
+                
+                var blocks =[];
+                var bottomRow =[];
+                this.floorPlan.row=[];
+                this.lastRow=[];
+                this.acRow=[];
+
+                if(columns == 3)
+                {
+                    this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center leftAC"});
+                    this.acRow.push({id: 2,class: "slds-col slds-size_4-of-12 slds-align_absolute-center rightAC"});
+                }
+                else if(columns == 2 ){
+                    this.acRow.push({id: 1,class: "slds-col slds-size_4-of-12 slds-align_absolute-center"});
+                }
+                
+
+                this.floorPlan.block.forEach((item,index) =>{
+                    blocks.push(item);
+                
+                    if((index+1) % columns == 0 ){
+                        rows--;
+                        blocks.id = index;
+                    if(rows == 0){
+                        blocks.isAC = false;
+                    }
+                    else{
+                        blocks.isAC = true;
+                    }
+                    this.floorPlan.row.push(blocks);
+                    blocks = [];
+                }
+
+       
+
+                if(item.window.length > 0){
+                    if(item.window.includes('left')){
+                        item.isLeftWindow = true;
+                    }
+                    if(item.window.includes('right')){
+                        item.isRightWindow = true;
+                    }
+                    if(item.window.includes('top')){
+                        item.isTopWindow = true;
+                    }
+                    if(item.window.includes('bottom')){
+                        this.lastRow.push({id: 1,isBottomWindow:true});
+                    }
+                }
+
+                if(item.meetingRoom.length > 0){
+                    if(item.meetingRoom.includes('left')){
+                        item.isLeftMeeting= true;
+                    }
+                    if(item.meetingRoom.includes('right')){
+                        item.isRightMeeting = true;
+                    }
+                    if(item.meetingRoom.includes('top')){
+                        item.isTopMeeting = true;
+                    }
+                    if(item.meetingRoom.includes('bottom')){
+                        this.lastRow.push({id: 2,isBottomMeeting:true});
+                    }
+                }
+
+                
+                item.cubicle.forEach((cube) =>{
+                    cube.class = cube.entry + ' cubicle';
+                });
+                if(bottomRow.length > 0){
+                    this.floorPlan.row.push(bottomRow);
+                }
+                if(resp[1]!=''){
+                var obj = JSON.parse(resp[1]);
+                obj.object.forEach((sId)=>{
+                    this.markSeatBooked(sId);
+                });
+            }
+    
+            })
+        }
     }
     
 
@@ -601,6 +633,21 @@ endTimeChange(evt){
             })
         });
     }
+
+    markSeatTrending(seatId){
+        this.floorPlan.row.forEach((arow)=>{
+            arow.forEach((ablock)=>{
+                ablock.cubicle.forEach((acubicle)=>{
+                    acubicle.seat.forEach((aSeat)=>{
+                        if(aSeat.Id == seatId)
+                        {
+                            aSeat.isTrending=true;
+                        }
+                    })
+                })
+            })
+        });
+    }
     
     goback(){
         const goback = new CustomEvent('back', { detail: this.userdetails});
@@ -609,8 +656,8 @@ endTimeChange(evt){
 
     popupshow(evt){
         debugger;
-        this.selectedSeatId = evt.target.dataset.seatid;
-        this.template.querySelector('.'+this.selectedSeatId).style.display='block';
+        //this.selectedSeatId = evt.target.dataset.seatid;
+        this.template.querySelector('.'+evt.target.dataset.seatid).style.display='block';
     }
 
     popuphide(evt){

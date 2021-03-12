@@ -4,7 +4,7 @@
             <div class="slds-p-around_medium lgc-bg">
                 <div class="style">
                     <div class="slds-align_absolute-center">
-                        <lightning-card style="width:400px; margin-top:30vh">
+                        <lightning-card style="width:500px; margin-top:30vh; border:1px solid black;">
                             <template if:false={loggedIn}>
                                 <lightning-layout horizontal-align="stretch">  
                                     <lightning-layout-item flexibility="auto" padding="around-small">
@@ -16,14 +16,15 @@
 
                                 <lightning-layout horizontal-align="stretch">  
                                     <lightning-layout-item flexibility="auto" padding="around-small">
-                                        <lightning-button class="slds-align_absolute-center" label="Continue" onclick={continueUser}> </lightning-button>
+                                        <button class="slds-align_absolute-center btn" onclick={continueUser}>Continue</button>
                                     </lightning-layout-item>
                                 </lightning-layout>
                             </template>
                             <template if:true={loggedIn}>
                                 <div class="slds-align_absolute-center">
-                                    <lightning-button label="Book a Seat" onclick={bookASeat}  class="slds-m-around_large"> </lightning-button>
-                                    <lightning-button label="My Booking" onclick={myBookings}  class="slds-m-around_large"> </lightning-button>
+                                    <button onclick={bookASeat}  class="slds-m-around_large btn">Book a Seat </button>
+                                    <button onclick={myBookings}  class="slds-m-around_large btn"> My Bookings</button>
+                                    <a class="btn slds-m-around_large" href="https://psl-6c-dev-ed.lightning.force.com/analytics/dashboard/0FK5g0000001BTcGAM" target="blank">Trends</a>
                                 </div>
                             </template>
                         </lightning-card>

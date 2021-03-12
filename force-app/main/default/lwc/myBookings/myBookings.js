@@ -9,6 +9,8 @@ export default class MyBookings extends LightningElement {
     selectedBookId='';
     selectedSeatId='';
     isModalOpen=false;
+    value="all";
+    
     
     @api userdetails={};
 
@@ -177,4 +179,5 @@ export default class MyBookings extends LightningElement {
         const goback = new CustomEvent('back', { detail: this.userdetails});
         this.dispatchEvent(goback);
     }
+
 }

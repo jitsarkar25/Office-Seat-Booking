@@ -8,7 +8,7 @@ tr:nth-child(even) {background-color: #efeeee;}
 
 table{
     width: 80%;
-    margin: 70px auto;
+    margin: 40px auto;
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -50,4 +50,10 @@ td{
 .slds-modal__header{
     background: #2C3134 !important;
     color: white !important
+}
+
+.heading{
+    text-align:center;
+    font-size:30px;
+    margin-top:60px;
 }

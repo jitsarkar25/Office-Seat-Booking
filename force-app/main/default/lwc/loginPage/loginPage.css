@@ -9,3 +9,20 @@
         background-repeat: no-repeat; 
         background-size: cover; 
 }
+
+.trendsbtn{
+        padding: 5px;
+        border: 1px solid #d3dee3;
+        width: 100px;
+        text-align: center;
+        border-radius: 5px;
+}
+
+.btn{
+    background: black;
+    color: white;
+    border-radius: 19px;
+    padding: 5px 10px;
+    text-align:center;
+    width:120px;
+}
