@@ -8,6 +8,9 @@ export default class LoginPage extends LightningElement {
     @api loggedIn =false;
     loginPage=true;
     seatSelector=false;
+    isModalOpen=false;
+    showToastBar = false;
+    autoCloseTime = 5000;
   
 
     //capture username from form
@@ -54,4 +57,24 @@ export default class LoginPage extends LightningElement {
     return str;
  }
 
+ rateus(){
+     this.isModalOpen=true;
+ }
+ closeModal(){
+     this.isModalOpen=false;
+ }
+
+ submitFeedback(){
+     this.closeModal();
+     this.showToast('Thank you for your feedback','success');
+ }
+
+ showToast(message,type){
+    this.type = type,
+    this.message = message;
+    this.showToastBar = true;
+    setTimeout(() =>{
+        this.showToastBar = false;
+    }, this.autoCloseTime);
+}
 }

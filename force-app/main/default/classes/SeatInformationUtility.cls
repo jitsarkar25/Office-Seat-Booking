@@ -1,4 +1,9 @@
 public without sharing class SeatInformationUtility {
+    public Map<String,String> cityVsshortCode = new Map<String,String>{
+        'NGP' => 'NGP',
+            'NAGPUR' => 'NGP',
+            'Nagpur' => 'NGP'
+    };
     public static String upsertBookedSeatInformation(String seat_information){
         //OCCUPIED
         //RETURNED
@@ -59,6 +64,7 @@ public without sharing class SeatInformationUtility {
     
     public List<String> returnTrendingSeats(Map<String,String> keyFilters){
         String city = keyFilters.get('city') != null ? keyFilters.get('city') : '';
+        city = cityVsshortCode.get(city) != null ? cityVsshortCode.get(city) : city;
         String building = keyFilters.get('building') != null ? keyFilters.get('building') : '';
         String floor = keyFilters.get('floor') != null ? keyFilters.get('floor') : '';
         String n_top_result = keyFilters.get('n_top_result') != null ? keyFilters.get('n_top_result') : '3';
@@ -73,7 +79,7 @@ public without sharing class SeatInformationUtility {
         Reports.Dimension dim = results.getGroupingsDown();
         Reports.GroupingValue groupingVal;
         for (Reports.GroupingValue groupingValItem : dim.getGroupings()) {
-            if(groupingValItem .getLabel() == cityBuildingFloorKey)
+            if(groupingValItem.getLabel() == cityBuildingFloorKey)
                 groupingVal = groupingValItem; 
             
         }

@@ -15,7 +15,7 @@ public without sharing class SeatSelectorController {
                                   Meeting_Room__c,Window__c from Blocks__c order by Block_Id__c];
         List<Cubicles__c> cubicles = [select Block__r.Block_Id__c,Cubicle_Id__c,entry__c from Cubicles__c order by Cubicle_Id__c];
         List<Seats__c> seats = [select Cubicle__r.Cubicle_Id__c,IsCloseToAC__c,isCloseToDoor__c,
-                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c from Seats__c order by seat_id__c];
+                                isCloseToMeetingRoom__c,isCloseToWIndow__c,Seat_Id__c,Average_Rating__c from Seats__c order by seat_id__c];
         
         configWrap.buildings = new List<ConfigWrapper.buildingWrapper>();
         for(Buildings__c building: buildings){
@@ -81,6 +81,7 @@ public without sharing class SeatSelectorController {
             seatData.isCloseToDoor = seat.isCloseToDoor__c;
             seatData.isCloseToMeetingRoom = seat.isCloseToMeetingRoom__c;
             seatData.isCloseToWindow = seat.isCloseToWIndow__c;
+            seatData.averageRating = seat.Average_Rating__c;
             configWrap.seats.add(seatData);
         }
         

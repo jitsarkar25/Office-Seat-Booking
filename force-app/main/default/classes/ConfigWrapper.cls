@@ -59,6 +59,8 @@ public inherited sharing class ConfigWrapper {
         public Boolean isCloseToMeetingRoom;
         @AuraEnabled
         public Boolean isCloseToWindow;
+        @AuraEnabled
+        public Decimal averageRating;
     }
 
     public class cubicleWrapper{

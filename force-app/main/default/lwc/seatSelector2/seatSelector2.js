@@ -138,7 +138,9 @@ export default class SeatSelector extends LightningElement {
                 underSeatIds.title="Seat Id: "+this.seatListForFloorPlan[seat].seatId;
                 underSeatIds.popupClass="popup "+this.seatListForFloorPlan[seat].seatId;
                 underSeatIds.popupText=[];
-
+                underSeatIds.popupText.push('Average Rating: '+this.seatListForFloorPlan[seat].avgRating);
+                
+                
                 underSeatIds.popupText.push('Seat Id: '+ this.seatListForFloorPlan[seat].seatId);
 
                 if( this.seatListForFloorPlan[seat].isCloseToAC){
@@ -296,7 +298,8 @@ export default class SeatSelector extends LightningElement {
                         isCloseToDoor: this.seatList[key].isCloseToDoor,
                         isCloseToMeetingRoom: this.seatList[key].isCloseToMeetingRoom,
                         isCloseToWindow: this.seatList[key].isCloseToWindow,
-                        title:"Close To Window " + this.seatList[key].isCloseToWindow
+                        title:"Close To Window " + this.seatList[key].isCloseToWindow,
+                        avgRating: this.seatList[key].avgRating,
                     });
                 }
                 this.seatListForFloorPlan = seat;
@@ -490,6 +493,7 @@ export default class SeatSelector extends LightningElement {
                         isCloseToDoor: response.seats[index].isCloseToDoor,
                         isCloseToMeetingRoom: response.seats[index].isCloseToMeetingRoom,
                         isCloseToWindow: response.seats[index].isCloseToWindow,
+                        avgRating: response.seats[index].averageRating,
                       });  
                 }
                 this.seatList = seat;

@@ -1,10 +1,29 @@
 <template>
+    
         <div style="background-image: url('https://get.clt.re/wp-content/uploads/2014/10/Parallax-Background-Light-1_1-02.jpg?w=640');">
+
+            <template if:true={showToastBar}>
+                <div class="slds-notify_container">
+                    <div class={outerClass} role="status">
+                      <span class="slds-assistive-text">{type}</span>
+                      <span class={innerClass} title={message}>
+                          <lightning-icon icon-name={getIconName} alternative-text="icon" variant="inverse" size="small"></lightning-icon>
+                      </span>
+                      <div class="slds-notify__content">
+                          <h2 class="slds-text-heading_small">{message}</h2>
+                      </div>
+                      <div class="slds-notify__close">
+                          <lightning-button-icon icon-name="utility:close" size="small" variant="border-filled" class="slds-button slds-button_icon slds-button_icon-inverse" alternative-text="next" onclick={closeModel} ></lightning-button-icon>
+                      </div>
+                    </div>
+                  </div>
+              </template>
+
         <div style="height:100vh;">
             <div class="slds-p-around_medium lgc-bg">
                 <div class="style">
                     <div class="slds-align_absolute-center">
-                        <lightning-card style="width:500px; margin-top:30vh; border:1px solid black;">
+                        <lightning-card style="width:650px; margin-top:30vh; border:1px solid black;">
                             <template if:false={loggedIn}>
                                 <lightning-layout horizontal-align="stretch">  
                                     <lightning-layout-item flexibility="auto" padding="around-small">
@@ -25,6 +44,7 @@
                                     <button onclick={bookASeat}  class="slds-m-around_large btn">Book a Seat </button>
                                     <button onclick={myBookings}  class="slds-m-around_large btn"> My Bookings</button>
                                     <a class="btn slds-m-around_large" href="https://psl-6c-dev-ed.lightning.force.com/analytics/dashboard/0FK5g0000001BTcGAM" target="blank">Trends</a>
+                                    <button onclick={rateus}  class="slds-m-around_large btn"> Rate Us</button>
                                 </div>
                             </template>
                         </lightning-card>
@@ -36,6 +56,31 @@
 
     <template if:true={isLoading}>
         <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+
+    <template if:true={isModalOpen}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Rate Us</h2>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c-overall-feedback employee-number={userDetails.id} employee-name={userDetails.Name} onsubmit={submitFeedback}></c-overall-feedback>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
     
 </template>

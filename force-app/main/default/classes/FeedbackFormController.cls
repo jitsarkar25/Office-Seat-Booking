@@ -24,4 +24,14 @@ public without sharing class FeedbackFormController {
             insert feedbackList;
         }  
     }
+    
+    @AuraEnabled
+    public static void submitOverAll(Decimal rating, String comment) {
+        //List to store feedback records
+        Overall_Feedback__c ofeed = new Overall_Feedback__c();
+        ofeed.rating__c = rating;
+        ofeed.comments__c = comment;
+        
+        insert ofeed;
+    }
 }

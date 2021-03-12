@@ -309,7 +309,7 @@ background: #0ae86f;
   }
 
 
-.selectedSeat{
+.selectedSeat, .selectedSeatlegend{
 background: #42A5F5;
 }
 

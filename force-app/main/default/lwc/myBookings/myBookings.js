@@ -115,6 +115,7 @@ export default class MyBookings extends LightningElement {
            this.mybookings.reverse();
            this.isLoading=false;
         }
+        this.isLoading=false;
     }
 
     occupySeat(evt){
